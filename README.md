@@ -45,3 +45,25 @@ For a comprehensive understanding of Swarm, start with the following official re
 * **Manual Bee Node Setup**
   For advanced users, the Bee node can be installed manually.
   See the official [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) for OS-specific setup instructions.
+
+## 2. Recommended stamp capacity calculation upon initial purchase. – Table, Desktop screenshots
+
+* We assume that we have all CIDs, and we can query the size of data stored on IPFS.
+* We calculate the required stamp capacity for all of the available erasure coding levels.
+* We make a capacity recommendation based on that.
+* No actual purchase.
+
+### 2.1 Stamp cost estimation based on current and predicted usage. Table, merged with previous
+
+* The user enters the required TTL.
+* We recommend a CLI call for purchasing that stamp.
+
+### 2.2 Monitoring stamp validity and capacity
+
+* Expiration can be monitored the same way as MSSD. [SCRIPT]
+* Remaining capacity can be calculated only via communicating with the node. We should recommend the Swarm CLI (refer to Galaxis doc), and Desktop
+
+### 2.3  Extending stamps in time or capacity
+
+* Already existing Swarm CLI calls.
+* Time has to be extended first, then capacity, but Swarm CLI has a call that does both in one call.
