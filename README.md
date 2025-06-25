@@ -1,46 +1,47 @@
-# ipfs-to-swarm
+# IPFS to SWARM
 
-A very simple TypeScript tool to download files from IPFS and upload them to Swarm (Bee).
+## 1. Introduction
 
-## Features
+Swarm is a fully decentralized, censorship-resistant peer-to-peer storage network powered by Bee nodes. Unlike IPFS, it doesn't rely on any centralized third-party infrastructure. Swarm's mission is to empower a self-sovereign global society and open, permissionless markets by offering scalable decentralized storage for Web3. Its incentive system runs on smart contracts on the Gnosis Chain and is fueled by the xBZZ token, ensuring economic sustainability.
 
-- Downloads content from IPFS using a CID
-- Uploads the downloaded content to a Swarm Bee node
-- Command-line interface
+### 1.1 Why choose Swarm over IPFS
 
-## Requirements
+Swarm offers several advantages over IPFS, especially in decentralized storage and content distribution.
 
-- Node.js v16 or newer
-- [pnpm](https://pnpm.io/)
-- A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
+* **Atomic Unit**: Swarm uses 4 kB chunks (compared to IPFS’s 256 kB), enabling more efficient storage and faster retrieval of small files.
+* **Mutable pointers**: Feeds allow dynamic content updates without changing the content address.
+* **Download speed**: Unlike IPFS, even rarely accessed files download quickly; popular files are even faster.
+* **Censorship Resistance**: Content is nearly impossible to remove, protecting against internal or external censorship.
+* **DDOS Resistance**: The architecture resists DDoS attacks, ensuring content availability under stress.
+* **Privacy/Anonymity**: Strong privacy and anonymity features make it ideal for sensitive data.
+* **Storage Payment**: Integrated BZZ token system enables decentralized storage payments.
+* **Incentives**: BZZ token rewards motivate users to contribute storage resources to the network.
 
-## Installation
+### 1.2 Further reading about Swarm – official documentation
 
-```sh
-pnpm install
-```
+For a comprehensive understanding of Swarm, start with the following official resources:
 
-## Build
+* [**Book of Swarm**](https://papers.ethswarm.org/p/book-of-swarm/) – Foundational document covering Swarm's architecture, vision, and core concepts.
+* [**Swarm Documentation Hub**](https://docs.ethswarm.org/) – Main entry point for users, developers, and node operators.
+* [**Swarm Gateway**](https://gateway.ethswarm.org/) – Public interface for accessing content on the Swarm network.
+* [**Bee Node Manual**](https://docs.ethswarm.org/docs/bee/installation/getting-started/) – for installing and configuring Bee nodes.
+* [**Swarm Blog**](https://blog.ethswarm.org/) – News, release notes, and deep technical insights.
+* [**Swarm GitHub Repositories**](https://github.com/ethersphere) – Source code, SDKs, and developer tools.
 
-```sh
-pnpm build
-```
+### 1.3 Setting up the infrastructure
 
-## Usage
+* **Swarm Desktop App**
+  The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows.
 
-Replace `<ipfs-cid>` with the actual CID of the file you want to download from IPFS.
+  * Installs both the Bee node and a user-friendly interface in one step
+  * Allows you to easily manage your node and access the network
 
-```sh
-node dist/index.js <ipfs-cid>
-```
+* **Command-line Access**
+  For Command-line interface (CLI) access to your Bee node, use the npm package [@ethersphere/swarm-cli](https://www.npmjs.com/package/@ethersphere/swarm-cli).
 
-## Project Structure
+* **Bee-JS**
+  The [Bee-JS](https://www.npmjs.com/package/@ethersphere/bee-js) provides a JavaScript/TypeScript library for interacting with Bee nodes, making it easy to integrate Swarm into your applications.
 
-- `src/index.ts`: Main entry point of the application
-- `src/ipfs.ts`: Handles IPFS interactions
-- `src/bee.ts`: Handles Swarm interactions
-
-## Configuration
-
-- The Bee node URL and batch ID are currently hardcoded in `src/bee.ts`.
-- Make sure your Bee node is running and the batch ID is valid.
+* **Manual Bee Node Setup**
+  For advanced users, the Bee node can be installed manually.
+  See the official [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) for OS-specific setup instructions.
