@@ -26,6 +26,7 @@ For a comprehensive understanding of Swarm, start with the following official re
 * [**Swarm Gateway**](https://gateway.ethswarm.org/) – Public interface for accessing content on the Swarm network.
 * [**Bee Node Manual**](https://docs.ethswarm.org/docs/bee/installation/getting-started/) – for installing and configuring Bee nodes.
 * [**Swarm Blog**](https://blog.ethswarm.org/) – News, release notes, and deep technical insights.
+* [**Migrating from IPFS to Swarm: Your Guide to a More Resilient & Empowering Decentralized Web**](https://solarpunk.buzz/migrating-from-ipfs-to-swarm-decentralized-web/)
 * [**Swarm GitHub Repositories**](https://github.com/ethersphere) – Source code, SDKs, and developer tools.
 
 ### 1.3 Setting up the infrastructure
