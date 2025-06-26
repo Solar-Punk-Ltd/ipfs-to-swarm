@@ -17,7 +17,20 @@ Swarm offers several advantages over IPFS, especially in decentralized storage a
 * **Storage Payment**: Integrated BZZ token system enables decentralized storage payments.
 * **Incentives**: BZZ token rewards motivate users to contribute storage resources to the network.
 
-### 1.2 Further reading about Swarm – official documentation
+### 1.2 Comparison of Swarm to IPF
+
+| Feature                     | Swarm                                                 | IPFS                                                  |
+|-----------------------------|-------------------------------------------------------|-------------------------------------------------------|
+| Data Availability           | Guaranteed via incentivised storage and retrieval     | No guarantees – relies on external pinning services.  |
+| Retrievability              | Native bandwidth market ensures persistent delivery   | No native incentives for retrieval                    |
+| Persistence Guarantees      | Long-term through economic incentives                 | Ephemeral unless actively pinned                      |
+| Privacy & Access Control    | Built-in encryption and on-chain ACT permissions.     | No native encryption or access management.            |
+| Censorship Resistance       | High – fully decentralised with autonomous guarantees | Limited – centralised services can be pressure points |
+| Architecture                | Decentralised storage service                         | Decentralised protocol                                |
+| Infrastructure Dependencies | Self-sustaining network                               | Typically needs third-party infrastructure            |
+| Target Use Case             | Production-grade dApps with long-term requirements    | File sharing and prototypes, not production storage.  |
+
+### 1.3 Further reading about Swarm – official documentation
 
 For a comprehensive understanding of Swarm, start with the following official resources:
 
@@ -29,7 +42,7 @@ For a comprehensive understanding of Swarm, start with the following official re
 * [**Migrating from IPFS to Swarm: Your Guide to a More Resilient & Empowering Decentralized Web**](https://solarpunk.buzz/migrating-from-ipfs-to-swarm-decentralized-web/)
 * [**Swarm GitHub Repositories**](https://github.com/ethersphere) – Source code, SDKs, and developer tools.
 
-### 1.3 Setting up the infrastructure
+### 1.4 Setting up the infrastructure
 
 * **Swarm Desktop App**
   The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows.
