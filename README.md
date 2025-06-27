@@ -17,7 +17,7 @@ Swarm offers several advantages over IPFS, especially in decentralized storage a
 * **Storage Payment**: Integrated BZZ token system enables decentralized storage payments.
 * **Incentives**: BZZ token rewards motivate users to contribute storage resources to the network.
 
-### 1.2 Comparison of Swarm to IPF
+### 1.2 Comparison of Swarm to IPFS
 
 | Feature                     | Swarm                                                 | IPFS                                                  |
 |-----------------------------|-------------------------------------------------------|-------------------------------------------------------|
@@ -51,7 +51,7 @@ For a comprehensive understanding of Swarm, start with the following official re
   * Allows you to easily manage your node and access the network
 
 * **Command-line Access**
-  For Command-line interface (CLI) access to your Bee node, use the npm package [@ethersphere/swarm-cli](https://www.npmjs.com/package/@ethersphere/swarm-cli).
+  For command-line interface (CLI) access to your Bee node, use the npm package [@ethersphere/swarm-cli](https://www.npmjs.com/package/@ethersphere/swarm-cli).
 
 * **Bee-JS**
   The [Bee-JS](https://www.npmjs.com/package/@ethersphere/bee-js) provides a JavaScript/TypeScript library for interacting with Bee nodes, making it easy to integrate Swarm into your applications.
@@ -60,9 +60,9 @@ For a comprehensive understanding of Swarm, start with the following official re
   For advanced users, the Bee node can be installed manually.
   See the official [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) for OS-specific setup instructions.
 
-## 2. Determining Stamp Capacity Before Initial Purchase
+## 2. Determining Swarm Stamp Capacity Before Initial Purchase
 
-To select the appropriate stamp size, you first need to estimate the total amount of data you plan to upload. This data volume will determine the required capacity of the postage stamp.
+Postage stamps are used to pay for storing data on Swarm. They are purchased in batches, granting a prepaid right to store data on Swarm, similar to how real-world postage stamps pay for mail delivery. To select the appropriate stamp size, you first need to estimate the total amount of data you plan to upload. This data volume will determine the required capacity of the postage stamp.
 
 ### 2.1 Estimating the Size of Data to Upload
 
@@ -85,3 +85,33 @@ The script clears the temporary download folder before each run to ensure fresh 
 
 **4**. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
 ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
+
+### 2.2 Swarm Stamp Depth and Amount
+
+Each stamp batch has two key parameters — **depth** and **amount** — which are recorded on the Gnosis Chain at the time of issuance.
+
+* **Batch Depth**
+  [Reference](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#batch-depth)
+  The depth determines how much data a batch can store. A batch can hold `2^batch_depth` chunks, with each chunk being 4 kB.
+  Total capacity = `2^batch_depth × 4 kB`.
+
+* **Batch Amount**
+  [Reference](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#batch-amount--batch-cost)
+  This is the amount of xBZZ (in PLUR, where 1 xBZZ = 10¹⁶ PLUR) assigned per chunk.
+
+* **Calculating the Required Amount for a Desired TTL**
+  [Reference](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#calculating-amount-needed-for-desired-ttl)
+  To calculate the required amount for a given storage time:
+
+  ``` text
+  (stamp_price ÷ block_time_in_seconds) × storage_duration_in_seconds
+  ```
+
+  For example, with a stamp price of 24,000 PLUR/chunk/block and a block time of 5 seconds:
+
+  ``` text
+  (24000 ÷ 5) × desired_seconds
+  ```
+
+> Stamp price is dynamic and depends on overall network utilisation.
+> See the [utilisation tables](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#unencrypted---none) for guidance on expected storage capacity and efficiency.
