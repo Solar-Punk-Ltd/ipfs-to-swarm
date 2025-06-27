@@ -125,3 +125,29 @@ Or you can use swarm-cli to buy stamps directly from the command line:
 ```bash
 swarm-cli stamp buy --depth <depth value> --amount <amount value>
 ```
+
+### 2.4 Monitoring Stamp Validity and Capacity
+
+You can monitor your Swarm stamps using the Swarm Desktop app or via the CLI:
+
+```bash
+swarm-cli stamp list
+```
+
+**Example output:**
+
+```text
+Stamp ID: f0a8788256368f5ca323905163d924981edf17f1b26954c9aae2d62fae341c12
+Label: test22
+Usage: 6%
+Capacity (immutable): 589.603 MB remaining out of 628.910 MB
+TTL: 7 days (2025-07-04)
+```
+
+This command lists all your stamps, including their ID, label, usage, remaining capacity, and time-to-live (TTL).
+
+> Note: This command only works on the Bee node that originally issued (stamped) the batch.
+
+You can also check the status of a specific stamp on the Gnosis Chain using the script in `examples/typescript/contract.ts`.
+
+> Note: Smart contracts cannot provide information about remaining capacity — only on-chain data such as ownership and amount.
