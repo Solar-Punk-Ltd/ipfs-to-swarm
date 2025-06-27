@@ -60,24 +60,28 @@ For a comprehensive understanding of Swarm, start with the following official re
   For advanced users, the Bee node can be installed manually.
   See the official [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) for OS-specific setup instructions.
 
-## 2. Recommended stamp capacity calculation upon initial purchase. – Table, Desktop screenshots
+## 2. Determining Stamp Capacity Before Initial Purchase
 
-* We assume that we have all CIDs, and we can query the size of data stored on IPFS.
-* We calculate the required stamp capacity for all of the available erasure coding levels.
-* We make a capacity recommendation based on that.
-* No actual purchase.
+To select the appropriate stamp size, you first need to estimate the total amount of data you plan to upload. This data volume will determine the required capacity of the postage stamp.
 
-### 2.1 Stamp cost estimation based on current and predicted usage. Table, merged with previous
+### 2.1 Estimating the Size of Data to Upload
 
-* The user enters the required TTL.
-* We recommend a CLI call for purchasing that stamp.
+**1**. Start the **IPFS Desktop** application.
 
-### 2.2 Monitoring stamp validity and capacity
+**2**. You can list the pinned files and their CIDs either via the application interface or using the command line:
 
-* Expiration can be monitored the same way as MSSD. [SCRIPT]
-* Remaining capacity can be calculated only via communicating with the node. We should recommend the Swarm CLI (refer to Galaxis doc), and Desktop
+```bash
+ipfs pin ls --type=recursive
+```
 
-### 2.3  Extending stamps in time or capacity
+**3**. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
+This script:
 
-* Already existing Swarm CLI calls.
-* Time has to be extended first, then capacity, but Swarm CLI has a call that does both in one call.
+* downloads the pinned files to a temporary folder,
+* saves them in a directory named `tmp_ipfs_download`,
+* prints the total size of all downloaded files.
+
+The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
+
+**4**. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
