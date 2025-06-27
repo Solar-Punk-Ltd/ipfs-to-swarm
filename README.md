@@ -115,3 +115,13 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
 
 > Stamp price is dynamic and depends on overall network utilisation.
 > See the [utilisation tables](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#unencrypted---none) for guidance on expected storage capacity and efficiency.
+
+### 2.3 Buying Swarm Stamps
+
+You can buy Swarm stamps using either the Swarm Desktop app or the command-line interface (CLI).
+![](./assets/stamp-buy.png)
+Or you can use swarm-cli to buy stamps directly from the command line:
+
+```bash
+swarm-cli stamp buy --depth <depth value> --amount <amount value>
+```
