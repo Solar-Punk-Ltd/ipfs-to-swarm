@@ -1,4 +1,4 @@
-# IPFS to SWARM
+# IPFS to Swarm
 
 ## 1. Introduction
 
@@ -34,13 +34,13 @@ Swarm offers several advantages over IPFS, especially in decentralized storage a
 
 For a comprehensive understanding of Swarm, start with the following official resources:
 
-* [**Book of Swarm**](https://papers.ethswarm.org/p/book-of-swarm/) – Foundational document covering Swarm's architecture, vision, and core concepts.
-* [**Swarm Documentation Hub**](https://docs.ethswarm.org/) – Main entry point for users, developers, and node operators.
-* [**Swarm Gateway**](https://gateway.ethswarm.org/) – Public interface for accessing content on the Swarm network.
-* [**Bee Node Manual**](https://docs.ethswarm.org/docs/bee/installation/getting-started/) – for installing and configuring Bee nodes.
-* [**Swarm Blog**](https://blog.ethswarm.org/) – News, release notes, and deep technical insights.
-* [**Migrating from IPFS to Swarm: Your Guide to a More Resilient & Empowering Decentralized Web**](https://solarpunk.buzz/migrating-from-ipfs-to-swarm-decentralized-web/)
-* [**Swarm GitHub Repositories**](https://github.com/ethersphere) – Source code, SDKs, and developer tools.
+* [Book of Swarm](https://papers.ethswarm.org/p/book-of-swarm/) – Foundational document covering Swarm's architecture, vision, and core concepts.
+* [Swarm Documentation Hub](https://docs.ethswarm.org/) – Main entry point for users, developers, and node operators.
+* [Swarm Gateway](https://gateway.ethswarm.org/) – Public interface for accessing content on the Swarm network.
+* [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) – for installing and configuring Bee nodes.
+* [Swarm Blog](https://blog.ethswarm.org/) – News, release notes, and deep technical insights.
+* [Migrating from IPFS to Swarm: Your Guide to a More Resilient & Empowering Decentralized Web](https://solarpunk.buzz/migrating-from-ipfs-to-swarm-decentralized-web/)
+* [Swarm GitHub Repositories](https://github.com/ethersphere) – Source code, SDKs, and developer tools.
 
 ### 1.4 Setting up the infrastructure
 
@@ -119,7 +119,7 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
 ### 2.3 Buying Swarm Stamps
 
 You can buy Swarm stamps using either the Swarm Desktop app or the command-line interface (CLI).
-![](./assets/stamp-buy.png)
+![Swarm Desktop App - Buy Stamp](./assets/stamp-buy.png)
 Or you can use swarm-cli to buy stamps directly from the command line:
 
 ```bash
@@ -158,3 +158,59 @@ To extend the time or capacity of a stamp, use the Swarm Desktop app or the CLI:
 
 * `swarm-cli stamp dilute` – Increases the depth of an existing stamp (adds capacity)
 * `swarm-cli stamp topup` – Increases the amount of an existing stamp (extends TTL)
+
+## 3. Migrating Data from IPFS to Swarm
+
+[This section should be added - describes the actual migration process]
+
+## 4. Advanced Configuration and Troubleshooting
+
+[This section should be added - covers advanced topics and common issues]
+
+## 5. Getting started as a Developer
+
+For using Swarm in your applications, you can use the [Bee-JS](https://www.npmjs.com/package/@ethersphere/bee-js) library, which provides a JavaScript/TypeScript interface for interacting with Bee nodes. An example app in the `src` directory demonstrates a simple CLI tool that downloads files from IPFS and uploads them to Swarm.
+
+
+### 5.1 Features
+
+* Downloads content from IPFS using a CID
+* Uploads the downloaded content to a Swarm Bee node
+* Command-line interface
+
+### 5.2 Requirements
+
+* Node.js v16 or newer
+* [pnpm](https://pnpm.io/)
+* A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
+
+### 5.3 Installation
+
+```sh
+pnpm install
+```
+
+### 5.4 Build
+
+```sh
+pnpm build
+```
+
+### 5.5 Usage
+
+Replace `<ipfs-cid>` with the actual CID of the file you want to download from IPFS.
+
+```sh
+node dist/index.js <ipfs-cid>
+```
+
+### 5.6 Project Structure
+
+* `src/index.ts`: Main entry point of the application
+* `src/ipfs.ts`: Handles IPFS interactions
+* `src/bee.ts`: Handles Swarm interactions
+
+### 5.7 Configuration
+
+* The Bee node URL and batch ID are currently hardcoded in `src/bee.ts`.
+* Make sure your Bee node is running and the batch ID is valid.
