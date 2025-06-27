@@ -1,5 +1,5 @@
 {
-  "name": "ipfs-get-ts",
+  "name": "ipfs-to-swarm",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
@@ -7,6 +7,11 @@
     "build": "tsc",
     "start": "node dist/index.js"
   },
+  "files":[
+    "dist",
+    "src",
+    "examples",
+    "README.md"  ],
   "dependencies": {
     "ipfs-http-client": "^60.0.1",
     "@ethersphere/bee-js": "^9.4.0"
