@@ -161,7 +161,80 @@ To extend the time or capacity of a stamp, use the Swarm Desktop app or the CLI:
 
 ## 3. Migrating Data from IPFS to Swarm
 
-[This section should be added - describes the actual migration process]
+This section explains how to migrate files from IPFS to Swarm using the provided CLI tool. The process downloads a file from IPFS (using its CID) and uploads it to Swarm, returning the new Swarm reference.
+
+### 3.1 Prerequisites
+
+- Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
+- You have a valid Swarm postage batch ID (see previous sections on buying stamps).
+- IPFS node is running locally (default: `http://127.0.0.1:5001`).
+- Project dependencies are installed and the code is built (see section 5.3 and 5.4).
+
+### 3.2 Migration Steps
+
+1. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
+2. **Run the migration CLI** with the CID as an argument:
+
+```sh
+node dist/index.js <ipfs-cid>
+```
+
+Replace `<ipfs-cid>` with your actual IPFS content ID.
+
+#### Example
+
+```sh
+node dist/index.js QmYwAPJzv5CZsnAzt8auVTL3nA3XgkHcVqZ9QZQZQZQZQZ
+```
+
+**Expected output:**
+
+```text
+IPFS : QmYwAPJzv5CZsnAzt8auVTL3nA3XgkHcVqZ9QZQZQZQZQZ
+SWARM: 3c7b8e0f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d
+```
+
+### 3.3 How It Works (Code Overview)
+
+The migration tool performs two main steps:
+
+1. **Download from IPFS:**
+   - The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
+   - Example:
+     ```typescript
+     const tempPath = await downloadFromIpfs(cid)
+     ```
+
+2. **Upload to Swarm:**
+   - The function `uploadToBee(filePath)` in `src/bee.ts` uploads the downloaded file to your Bee node using the configured batch ID.
+   - Example:
+     ```typescript
+     const ref = await uploadToBee(tempPath)
+     ```
+
+3. **CLI Orchestration:**
+   - The main script (`src/index.ts`) ties these steps together:
+     ```typescript
+     import { downloadFromIpfs } from './ipfs.js'
+     import { uploadToBee } from './bee.js'
+
+     const cid = process.argv[2]
+
+     if (!cid) {
+       console.error('Usage: node dist/index.js <CID>')
+       process.exit(1)
+     }
+
+     const tempPath = await downloadFromIpfs(cid)
+     const ref = await uploadToBee(tempPath)
+     console.log(`IPFS : ${cid}\nSWARM: ${ref}`)
+     ```
+
+### 3.4 Troubleshooting
+
+- Ensure both IPFS and Bee nodes are running and accessible.
+- Make sure your batch ID is valid and has enough capacity/TTL.
+- If you encounter errors, check the logs for more details and verify your network configuration.
 
 ## 4. Advanced Configuration and Troubleshooting
 
