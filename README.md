@@ -171,6 +171,10 @@ To extend the time or capacity of a stamp, use the Swarm Desktop app or the CLI:
 
 For using Swarm in your applications, you can use the [Bee-JS](https://www.npmjs.com/package/@ethersphere/bee-js) library, which provides a JavaScript/TypeScript interface for interacting with Bee nodes. An example app in the `src` directory demonstrates a simple CLI tool that downloads files from IPFS and uploads them to Swarm.
 
+* [Bee-JS doc](https://bee-js.ethswarm.org/docs/)
+* [Bee-JS npm package](https://www.npmjs.com/package/@ethersphere/bee-js)
+* [swarm-cli](https://github.com/ethersphere/swarm-cli)
+* [swarm-cli npm package](https://www.npmjs.com/package/@ethersphere/swarm-cli)
 
 ### 5.1 Features
 
