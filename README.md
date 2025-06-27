@@ -151,3 +151,10 @@ This command lists all your stamps, including their ID, label, usage, remaining 
 You can also check the status of a specific stamp on the Gnosis Chain using the script in `examples/typescript/contract.ts`.
 
 > Note: Smart contracts cannot provide information about remaining capacity — only on-chain data such as ownership and amount.
+
+### 2.5 Extending stamps in time or capacity
+
+To extend the time or capacity of a stamp, use the Swarm Desktop app or the CLI:
+
+* `swarm-cli stamp dilute` – Increases the depth of an existing stamp (adds capacity)
+* `swarm-cli stamp topup` – Increases the amount of an existing stamp (extends TTL)
