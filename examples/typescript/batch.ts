@@ -94,10 +94,6 @@ function calculateStampFinancialDetails(
   lastPrice: bigint,
 ): StampFinancialStatus {
   const remainingBalancePerChunk = batch.normalisedBalance - currentTotalOutPayment;
-  //const originalCapacity = Number(batch.normalisedBalance) * Math.pow(2, Number(batch.depth) - Number(batch.bucketDepth));
-  //const p = (getStampEffectiveBytes(Number(batch.depth))/getStampTheoreticalBytes(Number(batch.depth)))*Number(batch.normalisedBalance) / Number(lastPrice);
-  //const t = (p*4096)/(1000*1000*1000);
-  //console.log(`remaining: ${t}, original: ${originalCapacity}, lastPrice: ${lastPrice}, p: ${p}, t: ${t}`);
   if (remainingBalancePerChunk <= 0n) {
     return {
       isFinanciallyActive: false,
