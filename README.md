@@ -173,18 +173,18 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 ### 3.2 Migration Steps
 
 1. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
-2. **Run the migration CLI** with the CID as an argument:
+2. **Run the migration CLI** with the CID and batchId as arguments:
 
 ```sh
-node dist/index.js <ipfs-cid>
+node dist/index.js <ipfs-cid> <batch-id>
 ```
 
-Replace `<ipfs-cid>` with your actual IPFS content ID.
+Replace `<ipfs-cid>` with your actual IPFS content ID and `<batch-id>` with your Swarm postage batch ID.
 
 #### Example
 
 ```sh
-node dist/index.js QmYwAPJzv5CZsnAzt8auVTL3nA3XgkHcVqZ9QZQZQZQZQZ
+node dist/index.js QmYwAPJzv5CZsnAzt8auVTL3nA3XgkHcVqZ9QZQZQZQZQZ 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 ```
 
 **Expected output:**
@@ -199,34 +199,38 @@ SWARM: 3c7b8e0f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d
 The migration tool performs two main steps:
 
 1. **Download from IPFS:**
-   - The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
-   - Example:
+   * The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
+   * Example:
+
      ```typescript
      const tempPath = await downloadFromIpfs(cid)
      ```
 
 2. **Upload to Swarm:**
-   - The function `uploadToBee(filePath)` in `src/bee.ts` uploads the downloaded file to your Bee node using the configured batch ID.
-   - Example:
+   * The function `uploadToBee(filePath, batchId)` in `src/bee.ts` uploads the downloaded file to your Bee node using the batch ID.
+   * Example:
+
      ```typescript
-     const ref = await uploadToBee(tempPath)
+     const ref = await uploadToBee(tempPath, batchId)
      ```
 
 3. **CLI Orchestration:**
-   - The main script (`src/index.ts`) ties these steps together:
+   * The main script (`src/index.ts`) ties these steps together:
+
      ```typescript
      import { downloadFromIpfs } from './ipfs.js'
      import { uploadToBee } from './bee.js'
 
      const cid = process.argv[2]
+     const batchId = process.argv[3]
 
-     if (!cid) {
-       console.error('Usage: node dist/index.js <CID>')
+     if (!cid || !batchId) {
+       console.error('Usage: node dist/index.js <CID> <batchId>')
        process.exit(1)
      }
 
      const tempPath = await downloadFromIpfs(cid)
-     const ref = await uploadToBee(tempPath)
+     const ref = await uploadToBee(tempPath, batchId)
      console.log(`IPFS : ${cid}\nSWARM: ${ref}`)
      ```
 
@@ -249,7 +253,7 @@ This section covers advanced configuration options and common troubleshooting ti
     const bee = new Bee('http://your-remote-node:1633')
     ```
 - **Postage Batch ID:**
-  - The batch ID is hardcoded in `src/bee.ts` for simplicity. For production use, consider loading it from an environment variable or config file.
+  - The batch ID is provided via the CLI when running the migration tool, allowing you to specify it dynamically for each operation.
 - **Temporary File Handling:**
   - The migration tool downloads files from IPFS to a temporary path. Update the logic in `src/ipfs.ts` if you want to change the output location or handle multiple files in parallel.
 - **IPFS Node Endpoint:**
@@ -267,6 +271,12 @@ This section covers advanced configuration options and common troubleshooting ti
   - Double-check the CID and ensure the file is pinned and available on your IPFS node.
 - **Permission errors (EACCES) on file operations**
   - Run the CLI with appropriate permissions or change the download directory in the code.
+- **Check stamp status from CLI**
+    - You can verify the status of a specific stamp using:
+      ```sh
+      swarm-cli stamp check <stamp-id>
+      ```
+    - This command provides details about the stamp's validity, usage, and remaining capacity.
 
 ### 4.3 Debugging Tips
 
@@ -332,7 +342,7 @@ pnpm build
 Replace `<ipfs-cid>` with the actual CID of the file you want to download from IPFS.
 
 ```sh
-node dist/index.js <ipfs-cid>
+node dist/index.js <ipfs-cid> <swarm-batch-id>
 ```
 
 ### 6.6 Project Structure
