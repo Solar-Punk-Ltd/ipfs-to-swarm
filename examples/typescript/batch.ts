@@ -119,18 +119,7 @@ export async function checkAndWriteStampDetails(
 ): Promise<void> {
   const batchId = port.hash.startsWith('0x') ? port.hash : '0x' + port.hash;
   const onChainStampData = await getBatchDataFromContract(batchId);
-  /*
-  if (onChainStampData) {
-    console.log(`Processing batch with properties:`, {
-    owner: onChainStampData.owner,
-    depth: onChainStampData.depth,
-    bucketDepth: onChainStampData.bucketDepth,
-    immutableFlag: onChainStampData.immutableFlag,
-    normalisedBalance: onChainStampData.normalisedBalance,
-    lastUpdatedBlockNumber: onChainStampData.lastUpdatedBlockNumber,
-  });
-  }
-  */
+
   if (!onChainStampData) {
     console.error(`Failed to get batch data for ${batchId} or data was invalid.`);
     // Write a row indicating failure for this specific stamp
