@@ -19,6 +19,5 @@ export async function downloadFromIpfs(cid: string): Promise<string> {
 
   const fileBuffer = Buffer.concat(chunks)
   fs.writeFileSync(outputPath, fileBuffer)
-  //console.log(`File downloaded to : ${outputPath}`)
   return outputPath
 }
