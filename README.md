@@ -174,8 +174,9 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 
 ### 3.2 Migration Steps
 
-1. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
-2. **Run the migration CLI** with the CID and batchId as arguments:
+1. **Install dependencies and build the project** (see [Installation & Build](#63-installation))
+2. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
+3. **Run the migration CLI** with the CID and batchId as arguments:
 
 ```sh
 node dist/index.js <ipfs-cid> <batch-id>
