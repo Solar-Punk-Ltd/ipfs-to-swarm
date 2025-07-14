@@ -86,6 +86,8 @@ The script clears the temporary download folder before each run to ensure fresh 
 **4**. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
 ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
 
+> Please note that, for small files, IPFS may report their size as 0 bytes.
+
 ### 2.2 Swarm Stamp Depth and Amount
 
 Each stamp batch has two key parameters — **depth** and **amount** — which are recorded on the Gnosis Chain at the time of issuance.
