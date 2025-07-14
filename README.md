@@ -45,10 +45,7 @@ For a comprehensive understanding of Swarm, start with the following official re
 ### 1.4 Setting up the infrastructure
 
 * **Swarm Desktop App**
-  The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows.
-
-  * Installs both the Bee node and a user-friendly interface in one step
-  * Allows you to easily manage your node and access the network
+  The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows. Installs both the Bee node and a user-friendly interface in one step. Allows you to easily manage your node and access the network
 
 * **Command-line Access**
   For command-line interface (CLI) access to your Bee node, use the npm package [@ethersphere/swarm-cli](https://www.npmjs.com/package/@ethersphere/swarm-cli).
@@ -66,24 +63,25 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
 ### 2.1 Estimating the Size of Data to Upload
 
-**1**. Start the **IPFS Desktop** application.
+1. Start the **IPFS Desktop** application.
 
-**2**. You can list the pinned files and their CIDs either via the application interface or using the command line:
+2. You can list the pinned files and their CIDs either via the application interface or using the command line:
 
-```bash
-ipfs pin ls --type=recursive
-```
+    ```bash
+    ipfs pin ls --type=recurs00ive
+    ```
 
-**3**. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
-This script:
+3. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
 
-* downloads the pinned files to a temporary folder,
-* saves them in a directory named `tmp_ipfs_download`,
-* prints the total size of all downloaded files.
 
-The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
+    * downloads the pinned files to a temporary folder,
+    * saves them in a directory named `tmp_ipfs_download`,
+    * prints the total size of all downloaded files.
 
-**4**. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+    The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
+
+4. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+
 ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
 
 > Please note that, for small files, IPFS may report their size as 0 bytes.
@@ -121,6 +119,7 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
 ### 2.3 Buying Swarm Stamps
 
 You can buy Swarm stamps using either the Swarm Desktop app or the command-line interface (CLI).
+
 ![Swarm Desktop App - Buy Stamp](./assets/stamp-buy.png)
 Or you can use swarm-cli to buy stamps directly from the command line:
 
@@ -167,10 +166,10 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 
 ### 3.1 Prerequisites
 
-- Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
-- You have a valid Swarm postage batch ID (see [previous sections](#23-buying-swarm-stamps) on buying stamps).
-- IPFS node is running locally (default: `http://127.0.0.1:5001`).
-- Project dependencies are installed and the code is built (see section 5.3 and 5.4).
+* Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
+* You have a valid Swarm postage batch ID (see [previous sections](#23-buying-swarm-stamps) on buying stamps).
+* IPFS node is running locally (default: `http://127.0.0.1:5001`).
+* Project dependencies are installed and the code is built (see section 5.3 and 5.4).
 
 ### 3.2 Migration Steps
 
@@ -204,23 +203,21 @@ SWARM: 3c7b8e0f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d
 The migration tool performs two main steps:
 
 1. **Download from IPFS:**
-   * The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
-   * Example:
+    The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
 
      ```typescript
      const tempPath = await downloadFromIpfs(cid)
      ```
 
 2. **Upload to Swarm:**
-   * The function `uploadToBee(filePath, batchId)` in `src/bee.ts` uploads the downloaded file to your Bee node using the batch ID.
-   * Example:
+    The function `uploadToBee(filePath, batchId)` in `src/bee.ts` 
 
      ```typescript
      const ref = await uploadToBee(tempPath, batchId)
      ```
 
 3. **CLI Orchestration:**
-   * The main script (`src/index.ts`) ties these steps together:
+      The main script (`src/index.ts`) ties these steps together:
 
      ```typescript
      import { downloadFromIpfs } from './ipfs.js'
@@ -241,9 +238,9 @@ The migration tool performs two main steps:
 
 ### 3.4 Troubleshooting
 
-- Ensure both IPFS and Bee nodes are running and accessible.
-- Make sure your batch ID is valid and has enough capacity/TTL.
-- If you encounter errors, check the logs for more details and verify your network configuration.
+* Ensure both IPFS and Bee nodes are running and accessible.
+* Make sure your batch ID is valid and has enough capacity/TTL.
+* If you encounter errors, check the logs for more details and verify your network configuration.
 
 ## 4. Advanced Configuration and Troubleshooting
 
@@ -251,43 +248,46 @@ This section covers advanced configuration options and common troubleshooting ti
 
 ### 4.1 Advanced Configuration
 
-- **Custom Bee Node URL:**
-  - By default, the Bee node URL is set to `http://localhost:1633` in `src/bee.ts`.
-  - To use a remote Bee node, edit the URL in `src/bee.ts`:
+* **Custom Bee Node URL:**
+    By default, the Bee node URL is set to `http://localhost:1633` in `src/bee.ts`. To use a remote Bee node, edit the URL in `src/bee.ts`:
+
     ```typescript
     const bee = new Bee('http://your-remote-node:1633')
     ```
-- **Postage Batch ID:**
-  - The batch ID is provided via the CLI when running the migration tool, allowing you to specify it dynamically for each operation.
-- **Temporary File Handling:**
-  - The migration tool downloads files from IPFS to a temporary path. Update the logic in `src/ipfs.ts` if you want to change the output location or handle multiple files in parallel.
-- **IPFS Node Endpoint:**
-  - The IPFS HTTP API endpoint is set to `http://127.0.0.1:5001` in `src/ipfs.ts`. Change this if your IPFS node runs elsewhere.
+
+* **Postage Batch ID:**
+    The batch ID is provided via the CLI when running the migration tool, allowing you to specify it dynamically for each operation.
+* **Temporary File Handling:**
+    The migration tool downloads files from IPFS to a temporary path. Update the logic in `src/ipfs.ts` if you want to change the output location or handle multiple files in parallel.
+* **IPFS Node Endpoint:**
+    The IPFS HTTP API endpoint is set to `http://127.0.0.1:5001` in `src/ipfs.ts`. Change this if your IPFS node runs elsewhere.
 
 ### 4.2 Common Issues & Solutions
 
-- **Error: Invalid batch ID or insufficient funds/capacity**
-  - Make sure your postage batch is valid, funded, and not expired. Use `swarm-cli stamp list` to check status.
-- **IPFS connection refused or timeout**
-  - Ensure your IPFS daemon is running and accessible at the configured address.
-- **Bee node connection refused or timeout**
-  - Make sure your Bee node is running and reachable from your CLI environment.
-- **File not found or empty after migration**
-  - Double-check the CID and ensure the file is pinned and available on your IPFS node.
-- **Permission errors (EACCES) on file operations**
-  - Run the CLI with appropriate permissions or change the download directory in the code.
-- **Check stamp status from CLI**
-    - You can verify the status of a specific stamp using:
-      ```sh
-      swarm-cli stamp check <stamp-id>
-      ```
-    - This command provides details about the stamp's validity, usage, and remaining capacity.
+* **Error: Invalid batch ID or insufficient funds/capacity**
+    Make sure your postage batch is valid, funded, and not expired. Use `swarm-cli stamp list` to check status.
+* **IPFS connection refused or timeout**
+    Ensure your IPFS daemon is running and accessible at the configured address.
+* **Bee node connection refused or timeout**
+    Make sure your Bee node is running and reachable from your CLI environment.
+* **File not found or empty after migration**
+    Double-check the CID and ensure the file is pinned and available on your IPFS node.
+* **Permission errors (EACCES) on file operations**
+    Run the CLI with appropriate permissions or change the download directory in the code.
+* **Check stamp status from CLI**
+    You can verify the status of a specific stamp using:
+
+    ```sh
+    swarm-cli stamp check <stamp-id>
+    ```
+
+    This command provides details about the stamp's validity, usage, and remaining capacity.
 
 ### 4.3 Debugging Tips
 
-- Add `console.log` statements in `src/index.ts`, `src/ipfs.ts`, or `src/bee.ts` to trace execution and variable values.
-- Use the Bee node and IPFS node logs for deeper diagnostics.
-- For network issues, verify connectivity with `curl` or similar tools.
+* Add `console.log` statements in `src/index.ts`, `src/ipfs.ts`, or `src/bee.ts` to trace execution and variable values.
+* Use the Bee node and IPFS node logs for deeper diagnostics.
+* For network issues, verify connectivity with `curl` or similar tools.
 
 ## 5. Keeping Up to Date with Bee Node Versions
 
@@ -295,19 +295,20 @@ This section covers advanced configuration options and common troubleshooting ti
 
 It's important to keep your Bee node up to date for security, compatibility, and optimal performance. Here’s how you can stay current:
 
-- **Check Official Releases:**
-  - Visit the [Bee Releases page on GitHub](https://github.com/ethersphere/bee/releases) to see the latest versions, release notes, and changelogs.
-- **Read the Upgrade Guide:**
-  - Follow the [Upgrading Bee guide](https://docs.ethswarm.org/docs/bee/working-with-bee/upgrading-bee/) for best practices and step-by-step instructions.
-  - Before upgrading, always back up your keys and cash out your cheques to protect your xBZZ. See the [cashing out guide](https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out).
-  - Avoid updating during an active round to prevent loss of rewards or node issues. For advanced users, check your node’s round status via the `/redistributionstate` endpoint.
-- **Community Updates:**
-  - Join the [Swarm Discord](https://discord.com/invite/hyCr9BMX9U) and follow the `#node-operators` channel for announcements, tips, and support from other node operators.
+* **Check Official Releases:**
+    Visit the [Bee Releases page on GitHub](https://github.com/ethersphere/bee/releases) to see the latest versions, release notes, and changelogs.
+* **Read the Upgrade Guide:**
+  * Follow the [Upgrading Bee guide](https://docs.ethswarm.org/docs/bee/working-with-bee/upgrading-bee/) for best practices and step-by-step instructions.
+  * Before upgrading, always back up your keys and cash out your cheques to protect your xBZZ. See the [cashing out guide](https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out).
+  * Avoid updating during an active round to prevent loss of rewards or node issues. For advanced users, check your node’s round status via the `/redistributionstate` endpoint.
+* **Community Updates:**
+    Join the [Swarm Discord](https://discord.com/invite/hyCr9BMX9U) and follow the `#node-operators` channel for announcements, tips, and support from other node operators.
 
 **Useful Links:**
-- [Bee Releases (GitHub)](https://github.com/ethersphere/bee/releases)
-- [Upgrading Bee Documentation](https://docs.ethswarm.org/docs/bee/working-with-bee/upgrading-bee/)
-- [Swarm Discord](https://discord.com/invite/hyCr9BMX9U)
+
+* [Bee Releases (GitHub)](https://github.com/ethersphere/bee/releases)
+* [Upgrading Bee Documentation](https://docs.ethswarm.org/docs/bee/working-with-bee/upgrading-bee/)
+* [Swarm Discord](https://discord.com/invite/hyCr9BMX9U)
 
 ## 6. Getting started as a Developer
 
@@ -366,8 +367,8 @@ node dist/index.js <ipfs-cid> <swarm-batch-id>
 
 ## Community & Support
 
-- **Official Swarm Website:** [ethswarm.org](https://www.ethswarm.org/)
-- **Join the Community:** [Swarm Discord](https://discord.com/invite/hyCr9BMX9U)
-- **Professional Consultancy:** [Solarpunk.Buzz](https://solarpunk.buzz/)
+* **Official Swarm Website:** [ethswarm.org](https://www.ethswarm.org/)
+* **Join the Community:** [Swarm Discord](https://discord.com/invite/hyCr9BMX9U)
+* **Professional Consultancy:** [Solarpunk.Buzz](https://solarpunk.buzz/)
 
 If you have questions, need help, or want to connect with other users and developers, join the Swarm Discord. For professional consulting or custom migration solutions, reach out to [solarpunk.buzz](https://solarpunk.buzz/).
