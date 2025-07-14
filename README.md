@@ -21,12 +21,12 @@ Swarm offers several advantages over IPFS, especially in decentralized storage a
 
 | Feature                     | Swarm                                                 | IPFS                                                  |
 |-----------------------------|-------------------------------------------------------|-------------------------------------------------------|
-| Data Availability           | Guaranteed via incentivised storage and retrieval     | No guarantees – relies on external pinning services.  |
+| Data Availability           | Guaranteed via incentivized storage and retrieval     | No guarantees – relies on external pinning services.  |
 | Retrievability              | Native bandwidth market ensures persistent delivery   | No native incentives for retrieval                    |
 | Persistence Guarantees      | Long-term through economic incentives                 | Ephemeral unless actively pinned                      |
 | Privacy & Access Control    | Built-in encryption and on-chain ACT permissions.     | No native encryption or access management.            |
-| Censorship Resistance       | High – fully decentralised with autonomous guarantees | Limited – centralised services can be pressure points |
-| Architecture                | Decentralised storage service                         | Decentralised protocol                                |
+| Censorship Resistance       | High – fully decentralized with autonomous guarantees | Limited – centralized services can be pressure points |
+| Architecture                | Decentralized storage service                         | Decentralized protocol                                |
 | Infrastructure Dependencies | Self-sustaining network                               | Typically needs third-party infrastructure            |
 | Target Use Case             | Production-grade dApps with long-term requirements    | File sharing and prototypes, not production storage.  |
 
@@ -37,7 +37,7 @@ For a comprehensive understanding of Swarm, start with the following official re
 * [Book of Swarm](https://papers.ethswarm.org/p/book-of-swarm/) – Foundational document covering Swarm's architecture, vision, and core concepts.
 * [Swarm Documentation Hub](https://docs.ethswarm.org/) – Main entry point for users, developers, and node operators.
 * [Swarm Gateway](https://gateway.ethswarm.org/) – Public interface for accessing content on the Swarm network.
-* [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) – for installing and configuring Bee nodes.
+* [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) – For installing and configuring Bee nodes.
 * [Swarm Blog](https://blog.ethswarm.org/) – News, release notes, and deep technical insights.
 * [Migrating from IPFS to Swarm: Your Guide to a More Resilient & Empowering Decentralized Web](https://solarpunk.buzz/migrating-from-ipfs-to-swarm-decentralized-web/)
 * [Swarm GitHub Repositories](https://github.com/ethersphere) – Source code, SDKs, and developer tools.
@@ -45,7 +45,7 @@ For a comprehensive understanding of Swarm, start with the following official re
 ### 1.4 Setting up the infrastructure
 
 * **Swarm Desktop App**
-  The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows. Installs both the Bee node and a user-friendly interface in one step. Allows you to easily manage your node and access the network
+  The simplest way to get started is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows. It installs both the Bee node and a user-friendly interface in one step, allowing you to easily manage your node and access the network.
 
 * **Command-line Access**
   For command-line interface (CLI) access to your Bee node, use the npm package [@ethersphere/swarm-cli](https://www.npmjs.com/package/@ethersphere/swarm-cli).
@@ -68,11 +68,10 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 2. You can list the pinned files and their CIDs either via the application interface or using the command line:
 
     ```bash
-    ipfs pin ls --type=recurs00ive
+    ipfs pin ls --type=recursive
     ```
 
 3. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
-
 
     * downloads the pinned files to a temporary folder,
     * saves them in a directory named `tmp_ipfs_download`,
@@ -113,8 +112,8 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
   (24000 ÷ 5) × desired_seconds
   ```
 
-> Stamp price is dynamic and depends on overall network utilisation.
-> See the [utilisation tables](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#unencrypted---none) for guidance on expected storage capacity and efficiency.
+> Stamp price is dynamic and depends on overall network utilization.
+> See the [utilization tables](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#unencrypted---none) for guidance on expected storage capacity and efficiency.
 
 ### 2.3 Buying Swarm Stamps
 
@@ -169,7 +168,7 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 * Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
 * You have a valid Swarm postage batch ID (see [previous sections](#23-buying-swarm-stamps) on buying stamps).
 * IPFS node is running locally (default: `http://127.0.0.1:5001`).
-* Project dependencies are installed and the code is built (see section 5.3 and 5.4).
+* Project dependencies are installed and the code is built (see section 6.3 and 6.4).
 
 ### 3.2 Migration Steps
 
@@ -210,7 +209,7 @@ The migration tool performs two main steps:
      ```
 
 2. **Upload to Swarm:**
-    The function `uploadToBee(filePath, batchId)` in `src/bee.ts` 
+    The function `uploadToBee(filePath, batchId)` in `src/bee.ts` uploads the downloaded file to the Swarm network using the specified postage batch ID.
 
      ```typescript
      const ref = await uploadToBee(tempPath, batchId)
