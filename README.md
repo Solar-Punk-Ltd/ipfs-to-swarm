@@ -353,8 +353,9 @@ node dist/index.js <ipfs-cid> <swarm-batch-id>
 
 ### 6.7 Configuration
 
-* The Bee node URL and batch ID are currently hardcoded in `src/bee.ts`.
-* Make sure your Bee node is running and the batch ID is valid.
+* `src/bee.ts`: Set your Bee node URL (default: `http://localhost:1633`)
+* `src/ipfs.ts`: Set your IPFS node URL (default: `http://127.0.0.1:5001/api/v0`)
+* Make sure your Bee node and IPFS node are running and the batch ID is valid.
 
 ## Community & Support
 
