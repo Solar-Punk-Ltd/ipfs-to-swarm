@@ -168,7 +168,7 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 ### 3.1 Prerequisites
 
 - Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
-- You have a valid Swarm postage batch ID (see previous sections on buying stamps).
+- You have a valid Swarm postage batch ID (see [previous sections](#23-buying-swarm-stamps) on buying stamps).
 - IPFS node is running locally (default: `http://127.0.0.1:5001`).
 - Project dependencies are installed and the code is built (see section 5.3 and 5.4).
 
