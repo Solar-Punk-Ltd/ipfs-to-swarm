@@ -324,6 +324,8 @@ For using Swarm in your applications, you can use the [Bee-JS](https://www.npmjs
 * Node.js v16 or newer
 * [pnpm](https://pnpm.io/)
 * A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
+* A valid Swarm postage batch ID (see section [2](#2-determining-swarm-stamp-capacity-before-initial-purchase) for details on buying stamps)
+* A running [IPFS](https://docs.ipfs.tech/install/ipfs-desktop/) node
 
 ### 6.3 Installation
 
