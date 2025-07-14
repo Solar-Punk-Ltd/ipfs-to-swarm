@@ -86,6 +86,8 @@ The script clears the temporary download folder before each run to ensure fresh 
 **4**. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
 ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
 
+> Please note that, for small files, IPFS may report their size as 0 bytes.
+
 ### 2.2 Swarm Stamp Depth and Amount
 
 Each stamp batch has two key parameters — **depth** and **amount** — which are recorded on the Gnosis Chain at the time of issuance.
@@ -166,20 +168,23 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 ### 3.1 Prerequisites
 
 - Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
-- You have a valid Swarm postage batch ID (see previous sections on buying stamps).
+- You have a valid Swarm postage batch ID (see [previous sections](#23-buying-swarm-stamps) on buying stamps).
 - IPFS node is running locally (default: `http://127.0.0.1:5001`).
 - Project dependencies are installed and the code is built (see section 5.3 and 5.4).
 
 ### 3.2 Migration Steps
 
-1. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
-2. **Run the migration CLI** with the CID and batchId as arguments:
+1. **Install dependencies and build the project** (see [Installation & Build](#63-installation))
+2. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
+3. **Run the migration CLI** with the CID and batchId as arguments:
 
 ```sh
 node dist/index.js <ipfs-cid> <batch-id>
 ```
 
 Replace `<ipfs-cid>` with your actual IPFS content ID and `<batch-id>` with your Swarm postage batch ID.
+
+> Please use the correct CID! You can copy the CID for a file from IPFS Desktop.
 
 #### Example
 
@@ -324,6 +329,8 @@ For using Swarm in your applications, you can use the [Bee-JS](https://www.npmjs
 * Node.js v16 or newer
 * [pnpm](https://pnpm.io/)
 * A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
+* A valid Swarm postage batch ID (see section [2](#2-determining-swarm-stamp-capacity-before-initial-purchase) for details on buying stamps)
+* A running [IPFS](https://docs.ipfs.tech/install/ipfs-desktop/) node
 
 ### 6.3 Installation
 
@@ -353,8 +360,9 @@ node dist/index.js <ipfs-cid> <swarm-batch-id>
 
 ### 6.7 Configuration
 
-* The Bee node URL and batch ID are currently hardcoded in `src/bee.ts`.
-* Make sure your Bee node is running and the batch ID is valid.
+* `src/bee.ts`: Set your Bee node URL (default: `http://localhost:1633`)
+* `src/ipfs.ts`: Set your IPFS node URL (default: `http://127.0.0.1:5001/api/v0`)
+* Make sure your Bee node and IPFS node are running and the batch ID is valid.
 
 ## Community & Support
 
