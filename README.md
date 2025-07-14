@@ -45,10 +45,7 @@ For a comprehensive understanding of Swarm, start with the following official re
 ### 1.4 Setting up the infrastructure
 
 * **Swarm Desktop App**
-  The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows.
-
-  * Installs both the Bee node and a user-friendly interface in one step
-  * Allows you to easily manage your node and access the network
+  The simplest way to start is by installing the [Swarm Desktop App](https://github.com/ethersphere/swarm-desktop/releases), available for macOS, Linux, and Windows. Installs both the Bee node and a user-friendly interface in one step. Allows you to easily manage your node and access the network
 
 * **Command-line Access**
   For command-line interface (CLI) access to your Bee node, use the npm package [@ethersphere/swarm-cli](https://www.npmjs.com/package/@ethersphere/swarm-cli).
@@ -66,24 +63,25 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
 ### 2.1 Estimating the Size of Data to Upload
 
-**1**. Start the **IPFS Desktop** application.
+1. Start the **IPFS Desktop** application.
 
-**2**. You can list the pinned files and their CIDs either via the application interface or using the command line:
+2. You can list the pinned files and their CIDs either via the application interface or using the command line:
 
-```bash
-ipfs pin ls --type=recursive
-```
+    ```bash
+    ipfs pin ls --type=recurs00ive
+    ```
 
-**3**. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
-This script:
+3. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
 
-* downloads the pinned files to a temporary folder,
-* saves them in a directory named `tmp_ipfs_download`,
-* prints the total size of all downloaded files.
 
-The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
+    * downloads the pinned files to a temporary folder,
+    * saves them in a directory named `tmp_ipfs_download`,
+    * prints the total size of all downloaded files.
 
-**4**. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+    The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
+
+4. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+
 ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
 
 > Please note that, for small files, IPFS may report their size as 0 bytes.
@@ -121,6 +119,7 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
 ### 2.3 Buying Swarm Stamps
 
 You can buy Swarm stamps using either the Swarm Desktop app or the command-line interface (CLI).
+
 ![Swarm Desktop App - Buy Stamp](./assets/stamp-buy.png)
 Or you can use swarm-cli to buy stamps directly from the command line:
 
@@ -204,23 +203,21 @@ SWARM: 3c7b8e0f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d
 The migration tool performs two main steps:
 
 1. **Download from IPFS:**
-   * The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
-   * Example:
+    The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
 
      ```typescript
      const tempPath = await downloadFromIpfs(cid)
      ```
 
 2. **Upload to Swarm:**
-   * The function `uploadToBee(filePath, batchId)` in `src/bee.ts` uploads the downloaded file to your Bee node using the batch ID.
-   * Example:
+    The function `uploadToBee(filePath, batchId)` in `src/bee.ts` 
 
      ```typescript
      const ref = await uploadToBee(tempPath, batchId)
      ```
 
 3. **CLI Orchestration:**
-   * The main script (`src/index.ts`) ties these steps together:
+      The main script (`src/index.ts`) ties these steps together:
 
      ```typescript
      import { downloadFromIpfs } from './ipfs.js'
@@ -252,8 +249,7 @@ This section covers advanced configuration options and common troubleshooting ti
 ### 4.1 Advanced Configuration
 
 * **Custom Bee Node URL:**
-  * By default, the Bee node URL is set to `http://localhost:1633` in `src/bee.ts`.
-  * To use a remote Bee node, edit the URL in `src/bee.ts`:
+    By default, the Bee node URL is set to `http://localhost:1633` in `src/bee.ts`. To use a remote Bee node, edit the URL in `src/bee.ts`:
 
     ```typescript
     const bee = new Bee('http://your-remote-node:1633')
