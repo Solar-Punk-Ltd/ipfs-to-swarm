@@ -184,6 +184,8 @@ node dist/index.js <ipfs-cid> <batch-id>
 
 Replace `<ipfs-cid>` with your actual IPFS content ID and `<batch-id>` with your Swarm postage batch ID.
 
+> Please use the correct CID! You can copy the CID for a file from IPFS Desktop.
+
 #### Example
 
 ```sh
