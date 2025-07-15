@@ -63,27 +63,50 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
 ### 2.1 Estimating the Size of Data to Upload
 
-1. Start the **IPFS Desktop** application.
+* Start the **IPFS Desktop** application.
 
-2. You can list the pinned files and their CIDs either via the application interface or using the command line:
+* You can list the pinned files and their CIDs either via the application interface or using the command line:
 
     ```bash
     ipfs pin ls --type=recursive
     ```
 
-3. To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
+    > ⚠️ Note: This command lists both files and directories. To identify which items are actual files, you need to inspect each pinned CID individually.
 
-    * downloads the pinned files to a temporary folder,
-    * saves them in a directory named `tmp_ipfs_download`,
-    * prints the total size of all downloaded files.
+    You can determine whether a given CID points to a file or a directory by using the `ipfs cat <CID>` command:
+
+  * If the `CID` points to a file, ipfs cat will output    the file’s contents (binary files may produce unreadable output).
+  * If the `CID` points to a directory, the command will return an error like:
+
+      ```text
+      Error: this dag node is a directory
+      ```
+
+  Based on this behavior, the following shell script filters and lists only the files:
+
+  ```bash
+  for cid in $(ipfs pin ls --type recursive --quiet); do
+    if ipfs cat -l 10 "$cid" >/dev/null 2>&1; then
+      echo "$cid"
+    fi
+  done
+  ```
+
+  It's often easier to copy file CIDs directly from the IPFS Desktop app, where the content type is already clear.
+
+  ![IPFS CID Copy](./assets/ipfs-cid-copy.png)
+
+* To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
+
+  * downloads the pinned files to a temporary folder,
+  * saves them in a directory named `tmp_ipfs_download`,
+  * prints the total size of all downloaded files.
 
     The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
 
-4. Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+* Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
 
-![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
-
-> Please note that, for small files, IPFS may report their size as 0 bytes.
+  ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
 
 ### 2.2 Swarm Stamp Depth and Amount
 
