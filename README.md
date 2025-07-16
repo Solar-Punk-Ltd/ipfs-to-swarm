@@ -140,7 +140,11 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
   ![IPFS CID Copy](./assets/ipfs-cid-copy.png)
 
-* To calculate the total size of the pinned files, you can use the following Bash script: `examples/cli/download-from-ipfs.sh`
+* To calculate the total size of the pinned files, you can use the following Bash script:
+
+  ```bash
+  bash examples/cli/download-from-ipfs.sh
+  ```
 
   * downloads the pinned files to a temporary folder,
   * saves them in a directory named `tmp_ipfs_download`,
