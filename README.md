@@ -57,6 +57,48 @@ For a comprehensive understanding of Swarm, start with the following official re
   For advanced users, the Bee node can be installed manually.
   See the official [Bee Node Manual](https://docs.ethswarm.org/docs/bee/installation/getting-started/) for OS-specific setup instructions.
 
+### 1.5 Building the Migration Tool and Usage
+
+* **Requirements**
+  * Node.js v16 or newer
+  * [pnpm](https://pnpm.io/)
+  * A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
+  * A valid Swarm postage batch ID (see section [2](#2-determining-swarm-stamp-capacity-before-initial-purchase) for details on buying stamps)
+  * A running [IPFS](https://docs.ipfs.tech/install/ipfs-desktop/) node
+
+* **Clone the Repository**
+
+  ```sh
+  git clone git@github.com:Solar-Punk-Ltd/ipfs-to-swarm.git
+  cd ipfs-to-swarm
+  ```
+
+* **Installation**
+
+  ```sh
+  pnpm install
+  ```
+
+* **Build**
+
+  ```sh
+  pnpm build
+  ```
+
+* **Usage**
+
+  Replace `<ipfs-cid>` with the actual CID of the file you want to download from IPFS.
+
+  ```sh
+  node dist/index.js <ipfs-cid> <swarm-batch-id>
+  ```
+
+* **Configuration**
+
+  * `src/bee.ts`: Set your Bee node URL (default: `http://localhost:1633`)
+  * `src/ipfs.ts`: Set your IPFS node URL (default: `http://127.0.0.1:5001/api/v0`)
+  * Make sure your Bee node and IPFS node are running and the batch ID is valid.
+
 ## 2. Determining Swarm Stamp Capacity Before Initial Purchase
 
 Postage stamps are used to pay for storing data on Swarm. They are purchased in batches, granting a prepaid right to store data on Swarm, similar to how real-world postage stamps pay for mail delivery. To select the appropriate stamp size, you first need to estimate the total amount of data you plan to upload. This data volume will determine the required capacity of the postage stamp.
@@ -191,11 +233,11 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 * Ensure your [Bee node](https://docs.ethswarm.org/docs/bee/installation/) is running and accessible (default: `http://localhost:1633`).
 * You have a valid Swarm postage batch ID (see [previous sections](#23-buying-swarm-stamps) on buying stamps).
 * IPFS node is running locally (default: `http://127.0.0.1:5001`).
-* Project dependencies are installed and the code is built (see section 6.3 and 6.4).
+* Project dependencies are installed and the code is built.
 
 ### 3.2 Migration Steps
 
-1. **Install dependencies and build the project** (see [Installation & Build](#63-installation))
+1. **Install dependencies and build the project** (see [Building the Migration Tool and Usage](#15-building-the-migration-tool-and-usage) section).
 2. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
 3. **Run the migration CLI** with the CID and batchId as arguments:
 
@@ -341,53 +383,7 @@ For using Swarm in your applications, you can use the [Bee-JS](https://www.npmjs
 * [swarm-cli](https://github.com/ethersphere/swarm-cli)
 * [swarm-cli npm package](https://www.npmjs.com/package/@ethersphere/swarm-cli)
 
-### 6.1 Features
-
-* Downloads content from IPFS using a CID
-* Uploads the downloaded content to a Swarm Bee node
-* Command-line interface
-
-### 6.2 Requirements
-
-* Node.js v16 or newer
-* [pnpm](https://pnpm.io/)
-* A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
-* A valid Swarm postage batch ID (see section [2](#2-determining-swarm-stamp-capacity-before-initial-purchase) for details on buying stamps)
-* A running [IPFS](https://docs.ipfs.tech/install/ipfs-desktop/) node
-
-### 6.3 Installation
-
-```sh
-pnpm install
-```
-
-### 6.4 Build
-
-```sh
-pnpm build
-```
-
-### 6.5 Usage
-
-Replace `<ipfs-cid>` with the actual CID of the file you want to download from IPFS.
-
-```sh
-node dist/index.js <ipfs-cid> <swarm-batch-id>
-```
-
-### 6.6 Project Structure
-
-* `src/index.ts`: Main entry point of the application
-* `src/ipfs.ts`: Handles IPFS interactions
-* `src/bee.ts`: Handles Swarm interactions
-
-### 6.7 Configuration
-
-* `src/bee.ts`: Set your Bee node URL (default: `http://localhost:1633`)
-* `src/ipfs.ts`: Set your IPFS node URL (default: `http://127.0.0.1:5001/api/v0`)
-* Make sure your Bee node and IPFS node are running and the batch ID is valid.
-
-## Community & Support
+### 6.1 Community & Support
 
 * **Official Swarm Website:** [ethswarm.org](https://www.ethswarm.org/)
 * **Join the Community:** [Swarm Discord](https://discord.com/invite/hyCr9BMX9U)
