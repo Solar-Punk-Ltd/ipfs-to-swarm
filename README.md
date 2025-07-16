@@ -60,13 +60,16 @@ For a comprehensive understanding of Swarm, start with the following official re
 ### 1.5 Building the Migration Tool and Usage
 
 * **Requirements**
-  * Node.js v16 or newer
+  Before you start, ensure you have the following prerequisites:
+  * [git](https://git-scm.com/downloads) installed
+  * [Node.js](https://nodejs.org/en) v16 or newer
   * [pnpm](https://pnpm.io/)
   * A running [Bee](https://docs.ethswarm.org/docs/bee/installation/) node
   * A valid Swarm postage batch ID (see section [2](#2-determining-swarm-stamp-capacity-before-initial-purchase) for details on buying stamps)
   * A running [IPFS](https://docs.ipfs.tech/install/ipfs-desktop/) node
 
 * **Clone the Repository**
+  To get started, clone this repository to your local machine:
 
   ```sh
   git clone git@github.com:Solar-Punk-Ltd/ipfs-to-swarm.git
@@ -97,7 +100,6 @@ For a comprehensive understanding of Swarm, start with the following official re
 
   * `src/bee.ts`: Set your Bee node URL (default: `http://localhost:1633`)
   * `src/ipfs.ts`: Set your IPFS node URL (default: `http://127.0.0.1:5001/api/v0`)
-  * Make sure your Bee node and IPFS node are running and the batch ID is valid.
 
 ## 2. Determining Swarm Stamp Capacity Before Initial Purchase
 
