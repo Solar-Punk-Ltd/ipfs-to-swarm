@@ -136,6 +136,12 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
   done
   ```
 
+  This script is located in [examples/cli/list-ipfs-files.sh](./examples/cli/list-ipfs-files.sh) and can run with:
+
+  ```bash
+  bash examples/cli/list-ipfs-files.sh
+  ```
+
   It's often easier to copy file CIDs directly from the IPFS Desktop app, where the content type is already clear.
 
   ![IPFS CID Copy](./assets/ipfs-cid-copy.png)
