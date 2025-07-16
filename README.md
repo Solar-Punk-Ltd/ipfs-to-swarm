@@ -154,7 +154,17 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
   * downloads the pinned files to a temporary folder,
   * saves them in a directory named `tmp_ipfs_download`,
-  * prints the total size of all downloaded files.
+  * prints the total size of all downloaded files, along with the recommended stamp depth and amount values for storing these files for one year.
+
+  Example output:
+
+  ```text
+  Download IPFS files to: ./tmp_ipfs_download
+  Download: QmNevLJmACaaJ9PXNH6fgApsEEyC4KS6toQyjv6U811bFT
+  Download: QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
+
+    Size: 1M, Batch Depth: 18, Amount: 235283788800 for 1 year
+  ```
 
     The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
 
