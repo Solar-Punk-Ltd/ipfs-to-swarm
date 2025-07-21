@@ -1,4 +1,6 @@
-import { create } from 'ipfs-http-client'
+import { createHelia } from 'helia'
+import { unixfs } from '@helia/unixfs'
+import { CID } from 'multiformats/cid'
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
@@ -6,14 +8,25 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const ipfs = create({ url: 'http://127.0.0.1:5001/api/v0' })
+let heliaInstance: any = null
+let unixfsInstance: any = null
+
+async function getHelia() {
+  if (!heliaInstance) {
+    heliaInstance = await createHelia() 
+    unixfsInstance = unixfs(heliaInstance)
+  }
+  return { helia: heliaInstance, fs: unixfsInstance }
+}
 
 export async function downloadFromIpfs(cid: string): Promise<string> {
   const outputPath = path.resolve(__dirname, 'output.jpg')
-  const stream = ipfs.cat(cid)
+  const { fs: heliaFs } = await getHelia()
+
+  const parsedCid = CID.parse(cid)
   const chunks: Uint8Array[] = []
 
-  for await (const chunk of stream) {
+  for await (const chunk of heliaFs.cat(parsedCid)) {
     chunks.push(chunk)
   }
 
@@ -21,3 +34,9 @@ export async function downloadFromIpfs(cid: string): Promise<string> {
   fs.writeFileSync(outputPath, fileBuffer)
   return outputPath
 }
+
+process.on('exit', async () => {
+  if (heliaInstance) {
+    await heliaInstance.stop()
+  }
+})

@@ -7,17 +7,25 @@
     "build": "tsc",
     "start": "node dist/index.js"
   },
-  "files":[
+  "files": [
     "dist",
     "src",
     "examples",
-    "README.md"  ],
+    "README.md"
+  ],
   "dependencies": {
-    "ipfs-http-client": "^60.0.1",
-    "@ethersphere/bee-js": "^9.4.0"
+    "@ethersphere/bee-js": "^9.4.0",
+    "@helia/unixfs": "^3.0.0",
+    "helia": "^4.0.0",
+    "node-datachannel": "^0.28.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "typescript": "^5.4.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "node-datachannel"
+    ]
   }
 }
