@@ -145,14 +145,13 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
   It's often easier to copy file CIDs directly from the IPFS Desktop app, where the content type is already clear.
 
   ![IPFS CID Copy](./assets/ipfs-cid-copy.png)
-
-* To calculate the total size of the pinned files, you can use the following Bash script:
+* To download all files from IPFS (including directories and files) while preserving the directory structure and calculating the total size of the pinned files, you can use the following Bash script located in [examples/cli/download-from-ipfs.sh](./examples/cli/download-from-ipfs.sh):
 
   ```bash
   bash examples/cli/download-from-ipfs.sh
   ```
 
-  * downloads the pinned files to a temporary folder,
+  * downloads the pinned files and directories to a temporary folder,
   * saves them in a directory named `tmp_ipfs_download`,
   * prints the total size of all downloaded files, along with the recommended stamp depth and amount values for storing these files for one year.
 
@@ -160,10 +159,16 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
   ```text
   Download IPFS files to: ./tmp_ipfs_download
-  Download: QmNevLJmACaaJ9PXNH6fgApsEEyC4KS6toQyjv6U811bFT
-  Download: QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
 
-    Size: 1M, Batch Depth: 18, Amount: 235283788800 for 1 year
+  Downloading directory: folder1 (CID: QmPj5k5sYq8aQ65KrtQzxhPD8nsMkQA7FJAFUb4sRbpfsC)
+  Saving file(s) to ./tmp_ipfs_download/folder1
+    2.12 KiB / 2.12 KiB [====================================================================================================] 100.00% 0s
+  Downloading file: solarpunk.jpg (CID: QmNevLJmACaaJ9PXNH6fgApsEEyC4KS6toQyjv6U811bFT)
+  Saving file(s) to ./tmp_ipfs_download/solarpunk.jpg
+    47.68 KiB / 47.68 KiB [==================================================================================================] 100.00% 0s
+  All files and directories downloaded to ./tmp_ipfs_download
+
+  Size: 1M, Batch Depth: 18, Amount: 235283788800 for 1 year
   ```
 
     The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
