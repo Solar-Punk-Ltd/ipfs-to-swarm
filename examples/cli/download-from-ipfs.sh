@@ -96,10 +96,26 @@ mkdir -p "$DOWNLOAD_DIR"
 echo "Download IPFS files to: $DOWNLOAD_DIR"
 echo
 
-ipfs pin ls --type=recursive | awk '{print $1}' | while read -r cid; do
-  echo "Download: $cid"
-  ipfs get "$cid" -o "$DOWNLOAD_DIR/$cid" >/dev/null 2>&1
+# List all items in IPFS MFS root
+ipfs files ls / | while read -r ITEM; do
+  # Get CID and type for each item
+  STAT=$(ipfs files stat "/$ITEM")
+  CID=$(echo "$STAT" | head -n1)
+  TYPE=$(echo "$STAT" | grep -i "Type:" | awk '{print $2}')
+
+  TARGET="$DOWNLOAD_DIR/$ITEM"
+
+  if [[ "$TYPE" == "directory" ]]; then
+    echo "Downloading directory: $ITEM (CID: $CID)"
+    mkdir -p "$TARGET"
+    ipfs get "$CID" -o "$TARGET"
+  else
+    echo "Downloading file: $ITEM (CID: $CID)"
+    ipfs get "$CID" -o "$TARGET"
+  fi
 done
+
+echo "All files and directories downloaded to $DOWNLOAD_DIR"
 
 SIZE=$(du -sm "$DOWNLOAD_DIR" | awk '{print $1}')
 
