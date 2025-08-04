@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "@ethersphere/bee-js": "^9.4.0",
+    "@helia/http": "^2.1.2",
     "@helia/unixfs": "^3.0.0",
     "helia": "^4.0.0",
     "node-datachannel": "^0.28.0"
