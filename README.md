@@ -1,5 +1,45 @@
 # IPFS to Swarm
 
+## Table of Contents
+
+[1. Introduction](#1-introduction)
+[1.1 Why choose Swarm over IPFS](#11-why-choose-swarm-over-ipfs)
+[1.2 Comparison of Swarm to IPFS](#12-comparison-of-swarm-to-ipfs)
+[1.3 Further reading about Swarm – official documentation](#13-further-reading-about-swarm--official-documentation)
+[1.4 Setting up the infrastructure](#14-setting-up-the-infrastructure)
+[1.5 Building the Migration Tool and Usage](#15-building-the-migration-tool-and-usage)
+
+[2. Determining Swarm Stamp Capacity Before Initial Purchase](#2-determining-swarm-stamp-capacity-before-initial-purchase)
+[2.1 Estimating the Size of Data to Upload](#21-estimating-the-size-of-data-to-upload)
+[2.1.1 Using IPFS Desktop](#211-using-ipfs-desktop)
+[2.1.2 Using the Migration Tool for Size Estimation](#212-using-the-migration-tool-for-size-estimation)
+[2.1.3 Using the Bash Script (Alternative)](#213-using-the-bash-script-alternative)
+[2.1.4 Alternative: IPFS Desktop UI](#214-alternative-ipfs-desktop-ui)
+[2.2 Swarm Stamp Depth and Amount](#22-swarm-stamp-depth-and-amount)
+[2.3 Buying Swarm Stamps](#23-buying-swarm-stamps)
+[2.4 Monitoring Stamp Validity and Capacity](#24-monitoring-stamp-validity-and-capacity)
+[2.5 Extending stamps in time or capacity](#25-extending-stamps-in-time-or-capacity)
+
+[3. Migrating Data from IPFS to Swarm](#3-migrating-data-from-ipfs-to-swarm)
+[3.1 Prerequisites](#31-prerequisites)
+[3.2 Migration Steps](#32-migration-steps)
+[3.2.1 Single File Migration](#321-single-file-migration)
+[3.2.2 Bulk Migration (All IPFS MFS Content)](#322-bulk-migration-all-ipfs-mfs-content)
+[3.3 How It Works (Code Overview)](#33-how-it-works-code-overview)
+[3.3.1 Single File Migration](#331-single-file-migration)
+[3.3.2 Bulk Migration](#332-bulk-migration)
+[3.4 Troubleshooting](#34-troubleshooting)
+
+[4. Advanced Configuration and Troubleshooting](#4-advanced-configuration-and-troubleshooting)
+[4.1 Advanced Configuration](#41-advanced-configuration)
+[4.2 Common Issues & Solutions](#42-common-issues--solutions)
+[4.3 Debugging Tips](#43-debugging-tips)
+
+[5. Keeping Up to Date with Bee Node Versions](#5-keeping-up-to-date-with-bee-node-versions)
+
+[6. Getting started as a Developer](#6-getting-started-as-a-developer)
+[6.1 Community & Support](#61-community--support)
+
 ## 1. Introduction
 
 Swarm is a fully decentralized, censorship-resistant peer-to-peer storage network powered by Bee nodes. Unlike IPFS, it doesn't rely on any centralized third-party infrastructure. Swarm's mission is to empower a self-sovereign global society and open, permissionless markets by offering scalable decentralized storage for Web3. Its incentive system runs on smart contracts on the Gnosis Chain and is fueled by the xBZZ token, ensuring economic sustainability.
@@ -8,7 +48,7 @@ Swarm is a fully decentralized, censorship-resistant peer-to-peer storage networ
 
 Swarm offers several advantages over IPFS, especially in decentralized storage and content distribution.
 
-* **Atomic Unit**: Swarm uses 4 kB chunks (compared to IPFS’s 256 kB), enabling more efficient storage and faster retrieval of small files.
+* **Atomic Unit**: Swarm uses 4 kB chunks (compared to IPFS's 256 kB), enabling more efficient storage and faster retrieval of small files.
 * **Mutable pointers**: Feeds allow dynamic content updates without changing the content address.
 * **Download speed**: Unlike IPFS, even rarely accessed files download quickly; popular files are even faster.
 * **Censorship Resistance**: Content is nearly impossible to remove, protecting against internal or external censorship.
@@ -90,10 +130,20 @@ For a comprehensive understanding of Swarm, start with the following official re
 
 * **Usage**
 
+  The migration tool supports two modes:
+
+  **Single File Migration:**
   Replace `<ipfs-cid>` with the actual CID of the file you want to download from IPFS.
 
   ```sh
   node dist/index.js <ipfs-cid> <swarm-batch-id>
+  ```
+
+  **Bulk Migration (All IPFS MFS Content):**
+  Downloads all files and directories from your IPFS MFS root directory, preserving the original structure.
+
+  ```sh
+  node dist/index.js --all <swarm-batch-id>
   ```
 
 * **Configuration**
@@ -107,75 +157,93 @@ Postage stamps are used to pay for storing data on Swarm. They are purchased in 
 
 ### 2.1 Estimating the Size of Data to Upload
 
+#### 2.1.1 Using IPFS Desktop
+
 * Start the **IPFS Desktop** application.
 
 * You can list the pinned files and their CIDs either via the application interface or using the command line:
 
-    ```bash
+  ```bash
     ipfs pin ls --type=recursive
-    ```
+  ```
 
-    > ⚠️ Note: This command lists both files and directories. To identify which items are actual files, you need to inspect each pinned CID individually.
+  **Note:** This command lists both files and directories. To identify which items are actual files, you need to inspect each pinned CID individually. You can determine whether a given CID points to a file or a directory by using the `ipfs cat <CID>` command:
 
-    You can determine whether a given CID points to a file or a directory by using the `ipfs cat <CID>` command:
-
-  * If the `CID` points to a file, ipfs cat will output    the file’s contents (binary files may produce unreadable output).
+  * If the `CID` points to a file, `ipfs cat` will output    the file's contents (binary files may produce unreadable output).
   * If the `CID` points to a directory, the command will return an error like:
 
       ```text
       Error: this dag node is a directory
       ```
 
-  Based on this behavior, the following shell script filters and lists only the files:
+Based on this behavior, the following shell script filters and lists only the files:
 
-  ```bash
-  for cid in $(ipfs pin ls --type recursive --quiet); do
-    if ipfs cat -l 10 "$cid" >/dev/null 2>&1; then
-      echo "$cid"
-    fi
-  done
-  ```
+```bash
+for cid in $(ipfs pin ls --type recursive --quiet); do
+  if ipfs cat -l 10 "$cid" >/dev/null 2>&1; then
+    echo "$cid"
+  fi
+done
+```
 
-  This script is located in [examples/cli/list-ipfs-files.sh](./examples/cli/list-ipfs-files.sh) and can run with:
+This script is located in [examples/cli/list-ipfs-files.sh](./examples/cli/list-ipfs-files.sh) and can run with:
 
-  ```bash
-  bash examples/cli/list-ipfs-files.sh
-  ```
+```bash
+bash examples/cli/list-ipfs-files.sh
+```
 
-  It's often easier to copy file CIDs directly from the IPFS Desktop app, where the content type is already clear.
+It's often easier to copy file CIDs directly from the IPFS Desktop app, where the content type is already clear.
 
-  ![IPFS CID Copy](./assets/ipfs-cid-copy.png)
+![IPFS CID Copy](./assets/ipfs-cid-copy.png)
+  
+#### 2.1.2 Using the Migration Tool for Size Estimation
+
+You can use the built-in TypeScript/JavaScript migration tool to download all your IPFS MFS content and calculate the total size:
+
+```bash
+pnpm build
+node dist/index.js --all dummy-batch-id
+```
+
+This will download all files and directories from your IPFS MFS root to `tmp_ipfs_download/` and display the total size.
+
+#### 2.1.3 Using the Bash Script (Alternative)
+
 * To download all files from IPFS (including directories and files) while preserving the directory structure and calculating the total size of the pinned files, you can use the following Bash script located in [examples/cli/download-from-ipfs.sh](./examples/cli/download-from-ipfs.sh):
 
-  ```bash
+```bash
   bash examples/cli/download-from-ipfs.sh
-  ```
+```
 
-  * downloads the pinned files and directories to a temporary folder,
-  * saves them in a directory named `tmp_ipfs_download`,
-  * prints the total size of all downloaded files, along with the recommended stamp depth and amount values for storing these files for one year.
+This script:
 
-  Example output:
+* Downloads the pinned files and directories to a temporary folder
+* Saves them in a directory named `tmp_ipfs_download`
+* Prints the total size of all downloaded files, along with the recommended stamp depth and amount values for storing these files for one year
 
-  ```text
-  Download IPFS files to: ./tmp_ipfs_download
+**Example output:**
 
-  Downloading directory: folder1 (CID: QmPj5k5sYq8aQ65KrtQzxhPD8nsMkQA7FJAFUb4sRbpfsC)
-  Saving file(s) to ./tmp_ipfs_download/folder1
-    2.12 KiB / 2.12 KiB [====================================================================================================] 100.00% 0s
-  Downloading file: solarpunk.jpg (CID: QmNevLJmACaaJ9PXNH6fgApsEEyC4KS6toQyjv6U811bFT)
-  Saving file(s) to ./tmp_ipfs_download/solarpunk.jpg
-    47.68 KiB / 47.68 KiB [==================================================================================================] 100.00% 0s
-  All files and directories downloaded to ./tmp_ipfs_download
+```text
+Download IPFS files to: ./tmp_ipfs_download
 
-  Size: 1M, Batch Depth: 18, Amount: 235283788800 for 1 year
-  ```
+Downloading directory: folder1 (CID: QmPj5k5sYq8aQ65KrtQzxhPD8nsMkQA7FJAFUb4sRbpfsC)
+Saving file(s) to ./tmp_ipfs_download/folder1
+  2.12 KiB / 2.12 KiB [====================================================================================================] 100.00% 0s
+Downloading file: solarpunk.jpg (CID: QmNevLJmACaaJ9PXNH6fgApsEEyC4KS6toQyjv6U811bFT)
+Saving file(s) to ./tmp_ipfs_download/solarpunk.jpg
+  47.68 KiB / 47.68 KiB [==================================================================================================] 100.00% 0s
+All files and directories downloaded to ./tmp_ipfs_download
 
-    The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
+Size: 1M, Batch Depth: 18, Amount: 235283788800 for 1 year
+```
 
-* Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+The script clears the temporary download folder before each run to ensure fresh and accurate size calculations.
 
-  ![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
+#### 2.1.4 Alternative: IPFS Desktop UI
+
+Alternatively, you can estimate the data volume by checking the file sizes directly in the IPFS Desktop UI (see screenshot example).
+
+![IPFS Desktop Pinned Files](./assets/ipfs-files.png)
 
 ### 2.2 Swarm Stamp Depth and Amount
 
@@ -183,7 +251,7 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
 
 * **Batch Depth**
   [Reference](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#batch-depth)
-  The depth determines how much data a batch can store. A batch can hold `2^batch_depth` chunks, with each chunk being 4 kB.
+  The depth determines how much data a batch can store. A batch can hold `2^batch_depth` chunks, with each chunk being 4 kB.
   Total capacity = `2^batch_depth × 4 kB`.
 
 * **Batch Amount**
@@ -204,8 +272,8 @@ Each stamp batch has two key parameters — **depth** and **amount** — which a
   (24000 ÷ 5) × desired_seconds
   ```
 
-> Stamp price is dynamic and depends on overall network utilization.
-> See the [utilization tables](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#unencrypted---none) for guidance on expected storage capacity and efficiency.
+**Note:** Stamp price is dynamic and depends on overall network utilization.
+See the [utilization tables](https://docs.ethswarm.org/docs/concepts/incentives/postage-stamps/#unencrypted---none) for guidance on expected storage capacity and efficiency.
 
 ### 2.3 Buying Swarm Stamps
 
@@ -238,11 +306,11 @@ TTL: 7 days (2025-07-04)
 
 This command lists all your stamps, including their ID, label, usage, remaining capacity, and time-to-live (TTL).
 
-> Note: This command only works on the Bee node that originally issued (stamped) the batch.
+**Note:** This command only works on the Bee node that originally issued (stamped) the batch.
 
 You can also check the status of a specific stamp on the Gnosis Chain using the script in `examples/typescript/contract.ts`.
 
-> Note: Smart contracts cannot provide information about remaining capacity — only on-chain data such as ownership and amount.
+**Note:** Smart contracts cannot provide information about remaining capacity — only on-chain data such as ownership and amount.
 
 ### 2.5 Extending stamps in time or capacity
 
@@ -264,9 +332,14 @@ This section explains how to migrate files from IPFS to Swarm using the provided
 
 ### 3.2 Migration Steps
 
-1. **Install dependencies and build the project** (see [Building the Migration Tool and Usage](#15-building-the-migration-tool-and-usage) section).
-2. **Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
-3. **Run the migration CLI** with the CID and batchId as arguments:
+First, **install dependencies and build the project** (see [Building the Migration Tool and Usage](#15-building-the-migration-tool-and-usage))
+
+#### 3.2.1 Single File Migration
+
+For migrating individual files by their CID:
+
+**Obtain the IPFS CID** of the file you want to migrate (e.g., from `ipfs pin ls`).
+**Run the migration CLI** with the CID and batchId as arguments:
 
 ```sh
 node dist/index.js <ipfs-cid> <batch-id>
@@ -274,9 +347,9 @@ node dist/index.js <ipfs-cid> <batch-id>
 
 Replace `<ipfs-cid>` with your actual IPFS content ID and `<batch-id>` with your Swarm postage batch ID.
 
-> Please use the correct CID! You can copy the CID for a file from IPFS Desktop.
+> **Important:** Please use the correct CID! You can copy the CID for a file from IPFS Desktop.
 
-#### Example
+**Example:**
 
 ```sh
 node dist/index.js QmYwAPJzv5CZsnAzt8auVTL3nA3XgkHcVqZ9QZQZQZQZQZ 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
@@ -289,9 +362,71 @@ IPFS : QmYwAPJzv5CZsnAzt8auVTL3nA3XgkHcVqZ9QZQZQZQZQZ
 SWARM: 3c7b8e0f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d
 ```
 
+#### 3.2.2 Bulk Migration (All IPFS MFS Content)
+
+If you have folders and files stored on IPFS and want to migrate everything at once, you can use the bulk migration feature.
+
+For migrating all files and directories from your IPFS MFS root directory:
+
+```sh
+node dist/index.js --all <batch-id>
+```
+
+**Example:**
+
+```sh
+node dist/index.js --all 7db8086638ecb1691857b22b3d050eed8758fa27605ff27dcdc684e537cbc34f
+```
+
+**Expected output:**
+
+```text
+node dist/index.js --all 7db8086638ecb1691857b22b3d050eed8758fa27605ff27dcdc684e537cbc34f
+Starting download of all IPFS content...
+
+File  folder1/folder2/stamps_response.json - CID: QmYtKeGP66WqYXzT9Qxkmj6r68Db2cH2WSjmChk7SHsBpm
+File  folder1/folder3/folder4/download-from-ipfs.sh - CID: QmP85GANSTFma76TTC9SgvqTauKYeBd2K6S68Kn77eSWDP
+File  folder1/folder3/folder4/ipfs-text.txt - CID: QmVjXDgsBwHaKSjKftQ8jY1fqQ3qpnq4QoAzY1WH71DBka
+File  folder1/ipfs-text.txt - CID: QmVjXDgsBwHaKSjKftQ8jY1fqQ3qpnq4QoAzY1WH71DBka
+File  solarpunk.jpg - CID: QmNevLJmACaaJ9PXNH6fgApsEEyC4KS6toQyjv6U811bFT
+
+ All content downloaded to: /Users/ferencsarai/Work/ipfs-to-swarm/SPDV-392-ipfs-cid/tmp_ipfs_download
+
+ Download completed successfully!
+ Location: /Users/ferencsarai/Work/ipfs-to-swarm/SPDV-392-ipfs-cid/tmp_ipfs_download
+ BatchId: 7db8086638ecb1691857b22b3d050eed8758fa27605ff27dcdc684e537cbc34f
+
+Migration completed!
+ Swarm REF: ec290ad77c52e9198db44ded9d28004c4c99f5970067430aa97857a58e1c586a
+Closing Helia instance...
+```
+
+The Swarm reference (`ec290ad77c52e9198db44ded9d28004c4c99f5970067430aa97857a58e1c586a`) is printed at the end of the migration process. You can use this reference to access the migrated content on Swarm. To download the folder structure, use the `swarm-cli` command as shown below.
+
+```sh
+swarm-cli download ec290ad77c52e9198db44ded9d28004c4c99f5970067430aa97857a58e1c586a
+```
+
+This creates a directory structure like:
+
+```text
+└── ec290ad77c52e9198db44ded9d28004c4c99f5970067430aa97857a58e1c586a
+    ├── folder1
+    │   ├── folder2
+    │   │   └── stamps_response.json
+    │   ├── folder3
+    │   │   └── folder4
+    │   │       ├── download-from-ipfs.sh
+    │   │       └── ipfs-text.txt
+    │   └── ipfs-text.txt
+    └── solarpunk.jpg
+```
+
 ### 3.3 How It Works (Code Overview)
 
 The migration tool performs two main steps:
+
+#### 3.3.1 Single File Migration
 
 1. **Download from IPFS:**
     The function `downloadFromIpfs(cid)` in `src/ipfs.ts` fetches the file using the provided CID and saves it locally.
@@ -301,30 +436,26 @@ The migration tool performs two main steps:
      ```
 
 2. **Upload to Swarm:**
-    The function `uploadToBee(filePath, batchId)` in `src/bee.ts` uploads the downloaded file to the Swarm network using the specified postage batch ID.
+    The function `uploadFileToBee(filePath, batchId)` in `src/bee.ts` uploads the downloaded file to the Swarm network using the specified postage batch ID.
 
      ```typescript
-     const ref = await uploadToBee(tempPath, batchId)
+     const ref = await uploadFileToBee(tempPath, batchId)
      ```
 
-3. **CLI Orchestration:**
-      The main script (`src/index.ts`) ties these steps together:
+#### 3.3.2 Bulk Migration
+
+1. **Download All IPFS MFS Content:**
+    The function `downloadAllPinnedContent()` in `src/ipfs.ts` downloads all files and directories from the IPFS MFS root directory, preserving the original structure.
 
      ```typescript
-     import { downloadFromIpfs } from './ipfs.js'
-     import { uploadToBee } from './bee.js'
+     const downloadDir = await downloadAllPinnedContent()
+     ```
 
-     const cid = process.argv[2]
-     const batchId = process.argv[3]
+2. **Upload to Swarm:**
+    The function `uploadDirectoryToBee(directoryPath, batchId)` in `src/bee.ts` uploads the entire directory structure to Swarm, creating a new reference for the uploaded content.
 
-     if (!cid || !batchId) {
-       console.error('Usage: node dist/index.js <CID> <batchId>')
-       process.exit(1)
-     }
-
-     const tempPath = await downloadFromIpfs(cid)
-     const ref = await uploadToBee(tempPath, batchId)
-     console.log(`IPFS : ${cid}\nSWARM: ${ref}`)
+     ```typescript
+     const ref = await uploadDirectoryToBee(downloadDir, batchId)
      ```
 
 ### 3.4 Troubleshooting
@@ -357,14 +488,19 @@ This section covers advanced configuration options and common troubleshooting ti
 
 * **Error: Invalid batch ID or insufficient funds/capacity**
     Make sure your postage batch is valid, funded, and not expired. Use `swarm-cli stamp list` to check status.
+
 * **IPFS connection refused or timeout**
     Ensure your IPFS daemon is running and accessible at the configured address.
+
 * **Bee node connection refused or timeout**
     Make sure your Bee node is running and reachable from your CLI environment.
+
 * **File not found or empty after migration**
     Double-check the CID and ensure the file is pinned and available on your IPFS node.
+
 * **Permission errors (EACCES) on file operations**
     Run the CLI with appropriate permissions or change the download directory in the code.
+
 * **Check stamp status from CLI**
     You can verify the status of a specific stamp using:
 
@@ -384,14 +520,16 @@ This section covers advanced configuration options and common troubleshooting ti
 
 **Easiest option:** If you use Swarm Desktop, it includes an auto-update feature making it the simplest way to always stay up to date with the latest Bee releases.
 
-It's important to keep your Bee node up to date for security, compatibility, and optimal performance. Here’s how you can stay current:
+It's important to keep your Bee node up to date for security, compatibility, and optimal performance. Here's how you can stay current:
 
 * **Check Official Releases:**
     Visit the [Bee Releases page on GitHub](https://github.com/ethersphere/bee/releases) to see the latest versions, release notes, and changelogs.
+
 * **Read the Upgrade Guide:**
   * Follow the [Upgrading Bee guide](https://docs.ethswarm.org/docs/bee/working-with-bee/upgrading-bee/) for best practices and step-by-step instructions.
   * Before upgrading, always back up your keys and cash out your cheques to protect your xBZZ. See the [cashing out guide](https://docs.ethswarm.org/docs/bee/working-with-bee/cashing-out).
-  * Avoid updating during an active round to prevent loss of rewards or node issues. For advanced users, check your node’s round status via the `/redistributionstate` endpoint.
+  * Avoid updating during an active round to prevent loss of rewards or node issues. For advanced users, check your node's round status via the `/redistributionstate` endpoint.
+
 * **Community Updates:**
     Join the [Swarm Discord](https://discord.com/invite/hyCr9BMX9U) and follow the `#node-operators` channel for announcements, tips, and support from other node operators.
 
