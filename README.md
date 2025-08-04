@@ -2,43 +2,43 @@
 
 ## Table of Contents
 
-[1. Introduction](#1-introduction)
-[1.1 Why choose Swarm over IPFS](#11-why-choose-swarm-over-ipfs)
-[1.2 Comparison of Swarm to IPFS](#12-comparison-of-swarm-to-ipfs)
-[1.3 Further reading about Swarm – official documentation](#13-further-reading-about-swarm--official-documentation)
-[1.4 Setting up the infrastructure](#14-setting-up-the-infrastructure)
-[1.5 Building the Migration Tool and Usage](#15-building-the-migration-tool-and-usage)
+[1. Introduction](#1-introduction)  
+[1.1 Why choose Swarm over IPFS](#11-why-choose-swarm-over-ipfs)  
+[1.2 Comparison of Swarm to IPFS](#12-comparison-of-swarm-to-ipfs)  
+[1.3 Further reading about Swarm – official documentation](#13-further-reading-about-swarm--official-documentation)  
+[1.4 Setting up the infrastructure](#14-setting-up-the-infrastructure)  
+[1.5 Building the Migration Tool and Usage](#15-building-the-migration-tool-and-usage)  
 
-[2. Determining Swarm Stamp Capacity Before Initial Purchase](#2-determining-swarm-stamp-capacity-before-initial-purchase)
-[2.1 Estimating the Size of Data to Upload](#21-estimating-the-size-of-data-to-upload)
-[2.1.1 Using IPFS Desktop](#211-using-ipfs-desktop)
-[2.1.2 Using the Migration Tool for Size Estimation](#212-using-the-migration-tool-for-size-estimation)
-[2.1.3 Using the Bash Script (Alternative)](#213-using-the-bash-script-alternative)
-[2.1.4 Alternative: IPFS Desktop UI](#214-alternative-ipfs-desktop-ui)
-[2.2 Swarm Stamp Depth and Amount](#22-swarm-stamp-depth-and-amount)
-[2.3 Buying Swarm Stamps](#23-buying-swarm-stamps)
-[2.4 Monitoring Stamp Validity and Capacity](#24-monitoring-stamp-validity-and-capacity)
-[2.5 Extending stamps in time or capacity](#25-extending-stamps-in-time-or-capacity)
+[2. Determining Swarm Stamp Capacity Before Initial Purchase](#2-determining-swarm-stamp-capacity-before-initial-purchase)  
+[2.1 Estimating the Size of Data to Upload](#21-estimating-the-size-of-data-to-upload)  
+[2.1.1 Using IPFS Desktop](#211-using-ipfs-desktop)  
+[2.1.2 Using the Migration Tool for Size Estimation](#212-using-the-migration-tool-for-size-estimation)  
+[2.1.3 Using the Bash Script (Alternative)](#213-using-the-bash-script-alternative)  
+[2.1.4 Alternative: IPFS Desktop UI](#214-alternative-ipfs-desktop-ui)  
+[2.2 Swarm Stamp Depth and Amount](#22-swarm-stamp-depth-and-amount)  
+[2.3 Buying Swarm Stamps](#23-buying-swarm-stamps)  
+[2.4 Monitoring Stamp Validity and Capacity](#24-monitoring-stamp-validity-and-capacity)  
+[2.5 Extending stamps in time or capacity](#25-extending-stamps-in-time-or-capacity)  
 
-[3. Migrating Data from IPFS to Swarm](#3-migrating-data-from-ipfs-to-swarm)
-[3.1 Prerequisites](#31-prerequisites)
-[3.2 Migration Steps](#32-migration-steps)
-[3.2.1 Single File Migration](#321-single-file-migration)
-[3.2.2 Bulk Migration (All IPFS MFS Content)](#322-bulk-migration-all-ipfs-mfs-content)
-[3.3 How It Works (Code Overview)](#33-how-it-works-code-overview)
-[3.3.1 Single File Migration](#331-single-file-migration)
-[3.3.2 Bulk Migration](#332-bulk-migration)
-[3.4 Troubleshooting](#34-troubleshooting)
+[3. Migrating Data from IPFS to Swarm](#3-migrating-data-from-ipfs-to-swarm)  
+[3.1 Prerequisites](#31-prerequisites)  
+[3.2 Migration Steps](#32-migration-steps)  
+[3.2.1 Single File Migration](#321-single-file-migration)  
+[3.2.2 Bulk Migration (All IPFS MFS Content)](#322-bulk-migration-all-ipfs-mfs-content)  
+[3.3 How It Works (Code Overview)](#33-how-it-works-code-overview)  
+[3.3.1 Single File Migration](#331-single-file-migration)  
+[3.3.2 Bulk Migration](#332-bulk-migration)  
+[3.4 Troubleshooting](#34-troubleshooting)  
 
-[4. Advanced Configuration and Troubleshooting](#4-advanced-configuration-and-troubleshooting)
-[4.1 Advanced Configuration](#41-advanced-configuration)
-[4.2 Common Issues & Solutions](#42-common-issues--solutions)
-[4.3 Debugging Tips](#43-debugging-tips)
+[4. Advanced Configuration and Troubleshooting](#4-advanced-configuration-and-troubleshooting)  
+[4.1 Advanced Configuration](#41-advanced-configuration)  
+[4.2 Common Issues & Solutions](#42-common-issues--solutions)  
+[4.3 Debugging Tips](#43-debugging-tips)  
 
-[5. Keeping Up to Date with Bee Node Versions](#5-keeping-up-to-date-with-bee-node-versions)
+[5. Keeping Up to Date with Bee Node Versions](#5-keeping-up-to-date-with-bee-node-versions)  
 
-[6. Getting started as a Developer](#6-getting-started-as-a-developer)
-[6.1 Community & Support](#61-community--support)
+[6. Getting started as a Developer](#6-getting-started-as-a-developer)  
+[6.1 Community & Support](#61-community--support)  
 
 ## 1. Introduction
 
@@ -200,7 +200,6 @@ It's often easier to copy file CIDs directly from the IPFS Desktop app, where th
 
 You can use the built-in TypeScript/JavaScript migration tool to download all your IPFS MFS content and calculate the total size:
 
-
 ```bash
 pnpm build
 node dist/index.js --all dummy-batch-id
@@ -221,7 +220,6 @@ This script:
 * Downloads the pinned files and directories to a temporary folder
 * Saves them in a directory named `tmp_ipfs_download`
 * Prints the total size of all downloaded files, along with the recommended stamp depth and amount values for storing these files for one year
-
 
 **Example output:**
 
