@@ -200,6 +200,7 @@ It's often easier to copy file CIDs directly from the IPFS Desktop app, where th
 
 You can use the built-in TypeScript/JavaScript migration tool to download all your IPFS MFS content and calculate the total size:
 
+
 ```bash
 pnpm build
 node dist/index.js --all dummy-batch-id
@@ -220,6 +221,7 @@ This script:
 * Downloads the pinned files and directories to a temporary folder
 * Saves them in a directory named `tmp_ipfs_download`
 * Prints the total size of all downloaded files, along with the recommended stamp depth and amount values for storing these files for one year
+
 
 **Example output:**
 

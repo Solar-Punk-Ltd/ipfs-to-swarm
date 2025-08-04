@@ -1,5 +1,6 @@
 import { createHelia } from 'helia'
 import { unixfs, } from '@helia/unixfs'
+
 import { CID } from 'multiformats/cid'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -41,6 +42,7 @@ export async function downloadFileFromIpfs(cid: string): Promise<string> {
   const parsedCid = CID.parse(cid)
   const fileName = (await findFileName(parsedCid)) ?? `${parsedCid.toString()}.bin`
   const outputPath = path.resolve(__dirname, fileName)
+
   const chunks: Uint8Array[] = []
 
   for await (const chunk of heliaFs.cat(parsedCid)) {
@@ -181,4 +183,5 @@ process.on('SIGTERM', async () => {
 
 process.on('exit', async () => {
   await closeHelia()
+
 })
