@@ -1,5 +1,5 @@
-import { downloadFromIpfs, downloadAllPinnedContent } from './ipfs.js'
-import { uploadToBee } from './bee.js'
+import { downloadFileFromIpfs, downloadAllPinnedContent } from './ipfs.js'
+import { uploadDirectoryToBee, uploadFileToBee } from './bee.js'
 
 const args = process.argv.slice(2)
 
@@ -30,23 +30,23 @@ async function main() {
     }
 
     const batchId = args[1]
-    console.log('🚀 Starting download of all pinned IPFS content...\n')
+    console.log(' Starting download of all IPFS content...\n')
 
     try {
-      // Download all pinned content
       const downloadDir = await downloadAllPinnedContent()
-      console.log(`\n✅ All content downloaded to: ${downloadDir}`)
+      console.log(`\n All content downloaded to: ${downloadDir}`)
       
-      console.log(`\n📁 Download completed successfully!`)
-      console.log(`📍 Location: ${downloadDir}`)
-      console.log(`🔖 BatchId: ${batchId}`)
-      console.log(`\n💡 Next: Implement bulk upload to Swarm using batchId: ${batchId}`)
-      
-      // Explicitly exit
+      console.log(`\n Download completed successfully!`)
+      console.log(` Location: ${downloadDir}`)
+      console.log(` BatchId: ${batchId}`)
+      const ref = await uploadDirectoryToBee(downloadDir, batchId)
+      console.log(`\nMigration completed!`)
+      console.log(` Swarm REF: ${ref}`)
+
       process.exit(0)
       
     } catch (error) {
-      console.error('❌ Error downloading pinned content:', error)
+      console.error(' Error downloading pinned content:', error)
       process.exit(1)
     }
   } 
@@ -66,22 +66,22 @@ async function main() {
     console.log(`  BatchId: ${batchId}\n`)
 
     try {
-      const tempPath = await downloadFromIpfs(cid)
+      const tempPath = await downloadFileFromIpfs(cid)
       console.log(` Downloaded: ${tempPath}`)
       
-      const ref = await uploadToBee(tempPath, batchId)
+      const ref = await uploadFileToBee(tempPath, batchId)
       console.log(`\nMigration completed!`)
       console.log(` IPFS CID: ${cid}`)
       console.log(` Swarm REF: ${ref}`)
       
     } catch (error) {
-      console.error(' Error during migration:', error)
+      console.error('Error during migration:', error)
       process.exit(1)
     }
   }
 }
 
 main().catch(error => {
-  console.error('💥 Unexpected error:', error)
+  console.error('Unexpected error:', error)
   process.exit(1)
 })
